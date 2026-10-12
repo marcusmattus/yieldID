@@ -15,6 +15,8 @@ export interface LinkedWallet {
   label: string;
   /** True when the wallet signed a message proving it is held by the same person. */
   proven: boolean;
+  /** The link proof, published in the YieldID record so anyone can re-check it. */
+  proof?: { issuedAt: string; signature: string };
 }
 
 export interface AppState {
@@ -53,15 +55,25 @@ export const defaultState = (): AppState => ({
   channels: { telegram: false, discord: false, slack: false, showAmounts: false },
 });
 
-const KEY = 'yieldid:state:v1';
+// State is per signed-in wallet: a different wallet on the same browser starts clean.
+let owner: string | null = null;
+const keyFor = (o: string) => `yieldid:state:v2:${o}`;
 let state: AppState | null = null;
+
+/** Called by the app shell with the session address before any screen reads state. */
+export function setStoreOwner(address: string) {
+  if (owner === address) return;
+  owner = address;
+  state = null;
+}
 const listeners = new Set<() => void>();
 
 function load(): AppState {
   if (state) return state;
   const fallback = defaultState();
+  if (!owner) return fallback;
   try {
-    const raw = window.localStorage.getItem(KEY);
+    const raw = window.localStorage.getItem(keyFor(owner));
     state = raw ? { ...fallback, ...(JSON.parse(raw) as Partial<AppState>) } : fallback;
   } catch {
     state = fallback;
@@ -71,8 +83,12 @@ function load(): AppState {
 
 export function setAppState(update: (s: AppState) => AppState) {
   state = update(load());
+  if (!owner) {
+    listeners.forEach((l) => l());
+    return;
+  }
   try {
-    window.localStorage.setItem(KEY, JSON.stringify(state));
+    window.localStorage.setItem(keyFor(owner), JSON.stringify(state));
   } catch {
     /* storage blocked: keep in memory */
   }

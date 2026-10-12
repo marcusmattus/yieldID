@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useEffect, useState, type ReactNode } from 'react';
 import { shortAddress } from '@/lib/base58';
-import { useAppState } from '@/lib/store';
+import { setStoreOwner, useAppState } from '@/lib/store';
 import { Icon } from './icons';
 import { WalletChip } from './Nav';
 import { BrandMark } from './ui';
@@ -43,6 +43,8 @@ function useTheme() {
 }
 
 export function AppShell({ address, children }: { address: string; children: ReactNode }) {
+  // Scope saved state to this wallet before anything below reads it.
+  setStoreOwner(address);
   const path = usePathname();
   const router = useRouter();
   const { logout } = usePrivy();

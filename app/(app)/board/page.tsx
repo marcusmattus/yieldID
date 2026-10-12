@@ -126,7 +126,7 @@ export default function BoardPage() {
         )}
       </SampleRegion>
 
-      <section className="yf-stack" aria-labelledby="off-h">
+      <SampleRegion labelledBy="off-h" note="Same sample set. With live adapters a venue appears here when its read is stale, failed or unverified.">
         <h2 id="off-h" className="yf-h2">Not ranked</h2>
         {notRanked.length === 0 ? (
           <p className="yf-small">Every venue read cleanly and is ranked above.</p>
@@ -140,7 +140,7 @@ export default function BoardPage() {
             ))}
           </ul>
         )}
-      </section>
+      </SampleRegion>
 
       <div className="yf-row">
         {best ? (

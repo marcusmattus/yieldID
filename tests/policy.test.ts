@@ -60,6 +60,18 @@ describe('runChecks', () => {
     expect(verdict(checks).failed.map((c) => c.id)).toEqual(['slippage', 'simulation']);
   });
 
+  it('fails the hold check when hold time is unknown', () => {
+    const checks = runChecks(rule, policy, { ...base, size: 20_000, heldSince: null });
+    expect(verdict(checks).failed.map((c) => c.id)).toEqual(['hold']);
+  });
+
+  it('caps the move at the venue capacity', () => {
+    const small = { ...venueB, capacity: 15_000 };
+    const checks = runChecks(rule, policy, { ...base, venue: small, size: 20_000 });
+    expect(verdict(checks).failed.map((c) => c.id)).toEqual(['per_tx']);
+    expect(checks.find((c) => c.id === 'per_tx')!.detail).toContain('venue capacity 15,000');
+  });
+
   it('kill switch refuses everything', () => {
     const checks = runChecks(rule, { ...policy, killSwitch: true }, { ...base, size: 20_000 });
     expect(verdict(checks).failed.map((c) => c.id)).toEqual(['kill']);

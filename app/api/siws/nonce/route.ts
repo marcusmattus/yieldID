@@ -15,7 +15,8 @@ export async function POST(req: NextRequest) {
     uri: `${proto}://${host}/sign`,
     issuedAt: issuedAt.toISOString(),
     expirationTime: expirationTime.toISOString(),
-    chainId: process.env.NEXT_PUBLIC_SOLANA_CLUSTER === 'devnet' ? 'devnet' : 'mainnet',
+    // Mainnet only: RPC registration, the USDC mint and explorer links all target mainnet.
+    chainId: 'mainnet',
   });
   res.cookies.set(NONCE_COOKIE, seal({ nonce, exp: expirationTime.getTime() }), {
     httpOnly: true,

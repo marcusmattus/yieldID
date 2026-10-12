@@ -2,7 +2,7 @@ import { resolveTxt } from 'node:dns/promises';
 import { NextResponse, type NextRequest } from 'next/server';
 import { base58ToBytes } from '@/lib/base58';
 import { verifySolanaSignature } from '@/lib/server/ed25519';
-import { parseRecord, recordName, validateHandle } from '@/lib/yid';
+import { linkMessage, parseRecord, recordName, validateHandle } from '@/lib/yid';
 
 /**
  * Resolve a YieldID by reading its DNS TXT record and checking the signature
@@ -39,7 +39,21 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({
       status: ok ? 'verified' : 'bad_signature',
       name,
-      addresses: { sol: parsed.sol, evm: parsed.evm ?? null, hl: parsed.hl ?? null },
+      addresses: {
+        sol: parsed.sol,
+        evm: parsed.evm ?? null,
+        hl: parsed.hl ?? null,
+        // Each linked wallet's own signature over the link message naming the primary.
+        alt: (parsed.alt ?? []).map((a) => {
+          let proven = false;
+          try {
+            proven = verifySolanaSignature(a.address, new TextEncoder().encode(linkMessage(parsed.sol, a.address, a.issuedAt)), base58ToBytes(a.sig));
+          } catch {
+            proven = false;
+          }
+          return { address: a.address, proven };
+        }),
+      },
       checkedAt: new Date().toISOString(),
     });
   }

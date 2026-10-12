@@ -12,8 +12,15 @@ export interface YidAddresses {
   sol: string;
   evm?: string;
   hl?: string;
-  /** Further Solana addresses, each proven by its own signature before it is listed. */
-  alt?: string[];
+  /** Further Solana wallets. Each carries its own signature over linkMessage(sol, address, issuedAt). */
+  alt?: AltProof[];
+}
+
+export interface AltProof {
+  address: string;
+  issuedAt: string;
+  /** base58 ed25519 signature by `address` over linkMessage(primary, address, issuedAt) */
+  sig: string;
 }
 
 export interface ParsedRecord extends YidAddresses {
@@ -38,7 +45,8 @@ export function recordBody(a: YidAddresses): string {
   const parts = ['v=yid1', `sol=${a.sol}`];
   if (a.evm) parts.push(`evm=${a.evm}`);
   if (a.hl) parts.push(`hl=${a.hl}`);
-  if (a.alt && a.alt.length) parts.push(`alt=${a.alt.join(',')}`);
+  // address~issuedAt~sig per wallet, comma-separated. None of the three parts contains ~ or ,
+  if (a.alt && a.alt.length) parts.push(`alt=${a.alt.map((x) => `${x.address}~${x.issuedAt}~${x.sig}`).join(',')}`);
   return parts.join('; ');
 }
 
@@ -74,7 +82,17 @@ export function parseRecord(text: string): ParsedRecord | null {
   const sol = fields.get('sol');
   if (!sol || !sig) return null;
   const alt = fields.get('alt');
-  return { body, sig, sol, evm: fields.get('evm'), hl: fields.get('hl'), alt: alt ? alt.split(',').filter(Boolean) : undefined };
+  const altProofs = alt
+    ? alt
+        .split(',')
+        .filter(Boolean)
+        .map((entry) => {
+          const [address, issuedAt, s] = entry.split('~');
+          return { address, issuedAt, sig: s } as AltProof;
+        })
+        .filter((x) => x.address && x.issuedAt && x.sig)
+    : undefined;
+  return { body, sig, sol, evm: fields.get('evm'), hl: fields.get('hl'), alt: altProofs };
 }
 
 /** The message a second wallet signs to prove it belongs with the primary one. */
@@ -86,4 +104,10 @@ export function linkMessage(primary: string, added: string, issuedAt: string): s
     `Issued At: ${issuedAt}`,
     'This is a message, not a transaction. It moves nothing and grants nothing.',
   ].join('\n');
+}
+
+/** A link timestamp must parse and be within ten minutes of now. Date.parse returns NaN for garbage. */
+export function isFreshIssuedAt(issuedAt: string, now: number, maxAgeMs = 10 * 60_000): boolean {
+  const t = Date.parse(issuedAt);
+  return Number.isFinite(t) && Math.abs(now - t) <= maxAgeMs;
 }

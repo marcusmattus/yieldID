@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import { bytesToBase58 } from '../lib/base58';
 import { verifySolanaSignature } from '../lib/server/ed25519';
 import { buildSiwsMessage, parseSiwsMessage, SIWS_STATEMENT } from '../lib/siws';
-import { chunkTxt, parseRecord, recordBody, recordText, validateHandle, zoneLine } from '../lib/yid';
+import { chunkTxt, isFreshIssuedAt, linkMessage, parseRecord, recordBody, recordText, validateHandle, zoneLine } from '../lib/yid';
 
 function keypair() {
   const { publicKey, privateKey } = generateKeyPairSync('ed25519');
@@ -62,10 +62,31 @@ describe('YieldID record', () => {
     expect(verifySolanaSignature(parsed.sol, new TextEncoder().encode(parsed.body), new Uint8Array(Buffer.from(bs58(parsed.sig))))).toBe(true);
   });
 
-  it('carries extra proven Solana addresses in alt', () => {
-    const a = keypair().address, b = keypair().address, c = keypair().address;
-    const parsed = parseRecord(recordText(recordBody({ sol: a, alt: [b, c] }), 'sig'))!;
-    expect(parsed.alt).toEqual([b, c]);
+  it('publishes each linked wallet with its own verifiable link proof', () => {
+    const primary = keypair();
+    const linked = [keypair(), keypair()];
+    const issuedAt = '2026-10-12T08:40:00.000Z';
+    const alt = linked.map((k) => ({
+      address: k.address,
+      issuedAt,
+      sig: bytesToBase58(new Uint8Array(sign(null, Buffer.from(linkMessage(primary.address, k.address, issuedAt)), k.privateKey))),
+    }));
+    const parsed = parseRecord(recordText(recordBody({ sol: primary.address, alt }), 'sig'))!;
+    expect(parsed.alt).toEqual(alt);
+    for (const a of parsed.alt!) {
+      expect(verifySolanaSignature(a.address, new TextEncoder().encode(linkMessage(parsed.sol, a.address, a.issuedAt)), bs58(a.sig))).toBe(true);
+    }
+    // A proof made for a different primary does not verify against this record.
+    const other = keypair().address;
+    expect(verifySolanaSignature(alt[0].address, new TextEncoder().encode(linkMessage(other, alt[0].address, issuedAt)), bs58(alt[0].sig))).toBe(false);
+  });
+
+  it('rejects malformed or stale link timestamps', () => {
+    const now = Date.parse('2026-10-12T08:40:00.000Z');
+    expect(isFreshIssuedAt('2026-10-12T08:35:00.000Z', now)).toBe(true);
+    expect(isFreshIssuedAt('invalid', now)).toBe(false);
+    expect(isFreshIssuedAt('', now)).toBe(false);
+    expect(isFreshIssuedAt('2026-10-12T08:20:00.000Z', now)).toBe(false);
   });
 
   it('splits TXT strings at 255 characters', () => {

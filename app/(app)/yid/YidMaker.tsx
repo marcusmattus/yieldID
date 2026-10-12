@@ -47,7 +47,7 @@ export function YidMaker({ address, domain }: { address: string; domain: string 
   const primaryWallet = connected.find((w) => w.address === address);
   const linked = new Set(wallets.map((w) => w.address));
   const candidates = connected.filter((w) => w.address !== address && !linked.has(w.address));
-  const altSol = wallets.filter((w) => w.chain === 'Solana' && w.proven).map((w) => w.address);
+  const altSol = wallets.filter((w) => w.chain === 'Solana' && w.proven && w.proof).map((w) => ({ address: w.address, issuedAt: w.proof!.issuedAt, sig: w.proof!.signature }));
   const evm = wallets.find((w) => w.chain === 'EVM')?.address;
   const body = recordBody({ sol: address, alt: altSol, evm, hl: evm });
   const evmError = evmInput && !/^0x[0-9a-fA-F]{40}$/.test(evmInput) ? 'An EVM address is 0x followed by 40 hex characters.' : null;
@@ -71,9 +71,10 @@ export function YidMaker({ address, domain }: { address: string; domain: string 
     try {
       const issuedAt = new Date().toISOString();
       const { signature } = await signMessage({ message: new TextEncoder().encode(linkMessage(address, w.address, issuedAt)), wallet: w, options: { uiOptions: { title: 'Link this wallet to your YieldID' } } });
-      const out = await fetch('/api/wallets/prove', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ added: w.address, issuedAt, signature: bytesToBase58(signature) }) }).then((r) => r.json());
+      const sig58 = bytesToBase58(signature);
+      const out = await fetch('/api/wallets/prove', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ added: w.address, issuedAt, signature: sig58 }) }).then((r) => r.json());
       if (!out.ok) setError(`${out.reason} ${out.fix}`);
-      else { addWallet({ chain: 'Solana', address: w.address, label: w.standardWallet.name, proven: true }); setSigned(null); }
+      else { addWallet({ chain: 'Solana', address: w.address, label: w.standardWallet.name, proven: true, proof: { issuedAt, signature: sig58 } }); setSigned(null); }
     } catch (e) {
       setError(`The wallet did not sign: ${(e as Error).message}. Approve the message to link it.`);
     } finally {
@@ -122,7 +123,7 @@ export function YidMaker({ address, domain }: { address: string; domain: string 
           <p className="yf-sec-title">YieldID maker</p>
           <h1 className="yf-bignum" style={{ fontSize: 'clamp(36px, 5vw, 64px)' }}>{handle || 'your-name'}<small>@{domain}</small></h1>
         </div>
-        {savedHandle && <span className="yf-badge yf-badge--success">Verified in DNS</span>}
+        {savedHandle && savedHandle === handle && <span className="yf-badge yf-badge--success">Verified in DNS</span>}
       </header>
 
       <ol className="yf-steps" aria-label="Steps">
@@ -228,7 +229,7 @@ export function YidMaker({ address, domain }: { address: string; domain: string 
           <pre className="yf-code">{`${recordName(handle, domain)}.  300  IN  TXT\n  "${body}; sig=[signature]"`}</pre>
           <dl className="yf-kv">
             <dt>sol</dt><dd>{address}</dd>
-            {altSol.length > 0 && <><dt>alt</dt><dd>{altSol.join(', ')}</dd></>}
+            {altSol.length > 0 && <><dt>alt</dt><dd>{altSol.map((a) => a.address).join(', ')} · each with its own link signature</dd></>}
             {evm && <><dt>evm, hl</dt><dd>{evm} · not signed by that key</dd></>}
           </dl>
           <div className="yf-row">
@@ -279,7 +280,7 @@ export function YidMaker({ address, domain }: { address: string; domain: string 
           <div className="yf-row">
             <button type="button" className="yf-pillbtn yf-pillbtn--ghost" onClick={() => setStep(2)}>Back</button>
             <button type="button" className="yf-pillbtn yf-pillbtn--dark" onClick={verify} disabled={!signed || busy === 'verify'}>{busy === 'verify' ? 'Checking DNS…' : 'Check DNS'}</button>
-            {savedHandle && <Link className="yf-pillbtn yf-pillbtn--ember" href="/add-crypto">Next: add crypto {Icon.arrowRight(18)}</Link>}
+            {savedHandle && savedHandle === handle && <Link className="yf-pillbtn yf-pillbtn--ember" href="/add-crypto">Next: add crypto {Icon.arrowRight(18)}</Link>}
           </div>
         </section>
       )}

@@ -10,7 +10,7 @@ import { Disclaimer } from '@/components/ui';
 import { bytesToBase58 } from '@/lib/base58';
 import { buildSiwsMessage, SIWS_STATEMENT } from '@/lib/siws';
 
-type Nonce = { nonce: string; domain: string; uri: string; issuedAt: string; expirationTime: string; chainId: 'mainnet' | 'devnet' };
+type Nonce = { nonce: string; domain: string; uri: string; issuedAt: string; expirationTime: string; chainId: 'mainnet' };
 
 export default function SignPage() {
   const router = useRouter();

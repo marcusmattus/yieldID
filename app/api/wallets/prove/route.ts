@@ -2,7 +2,7 @@ import { NextResponse, type NextRequest } from 'next/server';
 import { base58ToBytes } from '@/lib/base58';
 import { verifySolanaSignature } from '@/lib/server/ed25519';
 import { getSession } from '@/lib/server/session';
-import { linkMessage } from '@/lib/yid';
+import { isFreshIssuedAt, linkMessage } from '@/lib/yid';
 
 /**
  * Verify that an added Solana wallet signed the link message naming the
@@ -15,7 +15,7 @@ export async function POST(req: NextRequest) {
   const { added, issuedAt, signature } = (await req.json().catch(() => ({}))) as { added?: string; issuedAt?: string; signature?: string };
   if (!added || !issuedAt || !signature) return NextResponse.json({ ok: false, reason: 'Missing fields.', fix: 'Sign the link message again.' }, { status: 400 });
   if (added === session.address) return NextResponse.json({ ok: false, reason: 'That is already your primary wallet.', fix: 'Switch to the other wallet in your extension.' }, { status: 400 });
-  if (Math.abs(Date.now() - Date.parse(issuedAt)) > 10 * 60_000) return NextResponse.json({ ok: false, reason: 'Link message expired.', fix: 'Sign a fresh one.' }, { status: 400 });
+  if (!isFreshIssuedAt(issuedAt, Date.now())) return NextResponse.json({ ok: false, reason: 'Link message timestamp is invalid or expired.', fix: 'Sign a fresh one.' }, { status: 400 });
 
   let sig: Uint8Array;
   try {

@@ -12,7 +12,7 @@ export interface SiwsFields {
   statement: string;
   uri: string;
   version: '1';
-  chainId: 'mainnet' | 'devnet';
+  chainId: 'mainnet';
   nonce: string;
   issuedAt: string;
   expirationTime: string;
@@ -48,7 +48,7 @@ export function parseSiwsMessage(message: string): SiwsFields | null {
   const nonce = field('Nonce');
   const issuedAt = field('Issued At');
   const expirationTime = field('Expiration Time');
-  if (!uri || version !== '1' || (chainId !== 'mainnet' && chainId !== 'devnet') || !nonce || !issuedAt || !expirationTime) {
+  if (!uri || version !== '1' || chainId !== 'mainnet' || !nonce || !issuedAt || !expirationTime) {
     return null;
   }
   return {

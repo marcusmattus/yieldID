@@ -66,6 +66,8 @@ export function runChecks(rule: Rule, policy: SpendPolicy, p: ProposalInput): Ch
   const readAgeSec = v.readAt === null ? Infinity : Math.round((p.now - v.readAt) / 1000);
   const heldMin = p.heldSince === null ? null : Math.floor((p.now - p.heldSince) / 60000);
   const dailyAfter = p.movedToday + p.size;
+  // The venue's quoted capacity caps the move too; unknown capacity allows nothing.
+  const sizeCap = Math.min(policy.perTxCap, rule.maxMove, v.capacity ?? 0);
 
   const checks: CheckResult[] = [
     {
@@ -85,8 +87,8 @@ export function runChecks(rule: Rule, policy: SpendPolicy, p: ProposalInput): Ch
     {
       id: 'hold',
       name: 'Minimum hold met',
-      pass: heldMin === null || heldMin >= rule.minHoldMin,
-      detail: heldMin === null ? 'No current sleeve' : `Held ${heldMin} min, limit ${rule.minHoldMin} min`,
+      pass: heldMin !== null && heldMin >= rule.minHoldMin,
+      detail: heldMin === null ? `Hold time unknown, limit ${rule.minHoldMin} min` : `Held ${heldMin} min, limit ${rule.minHoldMin} min`,
       fix: 'Wait until the minimum hold has passed.',
     },
     {
@@ -99,9 +101,9 @@ export function runChecks(rule: Rule, policy: SpendPolicy, p: ProposalInput): Ch
     {
       id: 'per_tx',
       name: 'Per-transaction cap',
-      pass: p.size <= Math.min(policy.perTxCap, rule.maxMove),
-      detail: `${n(p.size)} vs cap ${n(Math.min(policy.perTxCap, rule.maxMove))}`,
-      fix: 'Lower the size, or raise the per-transaction cap.',
+      pass: p.size <= sizeCap,
+      detail: `${n(p.size)} vs cap ${n(sizeCap)} (lowest of policy ${n(policy.perTxCap)}, rule ${n(rule.maxMove)}, venue capacity ${v.capacity === null ? 'unknown' : n(v.capacity)})`,
+      fix: 'Lower the size, or raise the per-transaction cap. Venue capacity cannot be raised.',
     },
     {
       id: 'daily',

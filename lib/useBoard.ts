@@ -19,8 +19,11 @@ export function useBoard() {
   }, []);
 
   const venues = useMemo(
-    () => sampleVenues(now).filter((v) => v.id === SAMPLE_CURRENT_ID || (rule.chains.includes(v.chain) && rule.sleeves.includes(v.sleeve))),
-    [now, rule.chains, rule.sleeves],
+    () =>
+      sampleVenues(now).filter(
+        (v) => v.id === SAMPLE_CURRENT_ID || (rule.chains.includes(v.chain) && rule.sleeves.includes(v.sleeve) && rule.assets.includes(v.asset)),
+      ),
+    [now, rule.chains, rule.sleeves, rule.assets],
   );
 
   const result = useMemo(
