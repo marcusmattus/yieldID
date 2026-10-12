@@ -31,7 +31,6 @@ export default function Landing() {
 
         <section className="yf-hero" aria-labelledby="hero-h">
           <div>
-            <span className="yf-badge yf-badge--forge">Colosseum Arena · Solana + Hyperliquid</span>
             <h1 id="hero-h">One name for your wallets. Every stable <em>ranked net.</em></h1>
             <p className="lede">
               YieldID names your wallets, watches stablecoin venues and proposes a switch only when it pays after the cost of moving. You sign every move. We never hold a coin.

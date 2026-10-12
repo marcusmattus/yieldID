@@ -117,7 +117,7 @@
 .yf-pillbtn--ember { background: var(--ember); color: var(--on-ember); }
 .yf-pillbtn--ghost { background: transparent; color: var(--ink); border-color: var(--border-strong); }
 .yf-hero { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr); gap: var(--space-12); align-items: center; }
-.yf-hero h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(44px, 6vw, 80px); line-height: 0.98; letter-spacing: -0.035em; margin: var(--space-4) 0 var(--space-5); text-wrap: balance; }
+.yf-hero h1 { font-family: var(--font-display); font-weight: 700; font-size: clamp(44px, 6vw, 80px); line-height: 0.98; letter-spacing: -0.035em; margin: 0 0 var(--space-5); text-wrap: balance; }
 .yf-hero h1 em { font-style: normal; color: var(--ember-text); }
 .yf-hero p.lede { font-size: 19px; line-height: 30px; color: var(--ink-secondary); margin: 0 0 var(--space-8); max-width: 36ch; }
 .yf-preview { border-radius: 32px; background: var(--rail); padding: 12px 12px 12px 64px; position: relative; box-shadow: 0 30px 80px rgba(20, 32, 26, 0.18); }
