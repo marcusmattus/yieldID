@@ -1,7 +1,7 @@
 /* App-level additions. Every value comes from the YieldForge tokens. */
 
 html, body { margin: 0; min-height: 100%; }
-body.yf-root { min-height: 100vh; padding-top: var(--space-6); }
+body.yf-root { min-height: 100vh; }
 
 .yf-brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
 .yf-brand__mark-arm { stroke: var(--ember-text); }
@@ -31,7 +31,6 @@ fieldset.yf-fieldset legend { padding: 0; margin-bottom: var(--space-2); }
 
 .yf-board-cards { display: none; flex-direction: column; gap: var(--space-3); }
 @media (max-width: 640px) {
-  body.yf-root { padding-top: var(--space-2); }
   .yf-board-table { display: none; }
   .yf-board-cards { display: flex; }
   .yf-nav__links { order: 3; width: 100%; overflow-x: auto; flex-wrap: nowrap; }

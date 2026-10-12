@@ -10,7 +10,7 @@ Next.js 15 (App Router) · TypeScript · Privy (Phantom, Solana wallets, email) 
 npm install
 cp .env.example .env.local   # then fill it in, see below
 npm run dev                  # http://localhost:3000
-npm test                     # 19 tests: ranking, policy checks, SIWS, signatures, YieldID records
+npm test                     # 20 tests: ranking, policy checks, SIWS, signatures, YieldID records
 ```
 
 ### `.env.local`
@@ -25,11 +25,18 @@ npm test                     # 19 tests: ranking, policy checks, SIWS, signature
 
 Add `http://localhost:3000` (and your deploy URL) to **Allowed origins** in the Privy dashboard.
 
+## The app
+
+- `/` landing page: what YieldID does, the net-rate example, the YieldID record, three ways to add crypto, and **Connect wallet** buttons into the app.
+- The signed-in app is a light shell (dark icon rail, rounded main card, Earn / Build switch, theme toggle). Home (`/forge`) shows your **live** wallet USDC balance read from Solana, linked wallets, quick actions, gross vs net per venue and next steps.
+- `/yid` YieldID maker: pick a handle (DNS availability check), add wallets (each extra Solana wallet signs a link message verified by `/api/wallets/prove`; EVM addresses are listed as not signed), sign the record, publish and verify.
+- `/add-crypto`: your address with QR code and copy, the exact network and USDC mint, a live balance that rechecks every 15 s and shows arrivals, and guides for exchange, CCTP bridge, and card/bank through Privy's `useFundWallet`.
+
 ## How sign-in works
 
-1. **Connect wallet** (`/`): lists the Solana wallets the browser actually has, with each wallet's own icon from the Wallet Standard (Phantom shows Phantom's icon from its extension). Clicking one opens Privy's connect modal for that wallet. Phantom is linked to install if it is missing. Email through Privy is the secondary line and creates an embedded Solana wallet.
+1. **Connect wallet** (`/connect`): lists the Solana wallets the browser actually has, with each wallet's own icon from the Wallet Standard (Phantom shows Phantom's icon from its extension). Clicking one opens Privy's connect modal for that wallet. Phantom is linked to install if it is missing. Email through Privy is the secondary line and creates an embedded Solana wallet.
 2. **Sign to verify** (`/sign`): the server issues a single-use nonce. The page shows the sign-in-with-Solana message verbatim, the wallet signs it, and `/api/siws/verify` checks domain, address, statement, expiry, nonce and the ed25519 signature before setting an httpOnly session cookie. Connecting alone is a public-key read; no transaction, no allowance.
-3. **Claim YieldID** (`/claim`): the wallet signs the record body; you paste the TXT record into your DNS; **Check DNS** resolves it and verifies the signature (`/api/yid/resolve`). Anyone can do the same check.
+3. **YieldID maker** (`/yid`): the wallet signs the record body; you paste the TXT record into your DNS; **Check DNS** resolves it and verifies the signature (`/api/yid/resolve`). Anyone can do the same check.
 
 Every app route (`app/(app)/*`) is gated server-side on the session cookie.
 
@@ -53,6 +60,8 @@ Gross, annualised move cost, net and edge stay separate fields and columns. The 
 | Wallet connect, SIWS sign-in, sessions | Live |
 | YieldID record signing and DNS verification | Live |
 | Tracker: signatures for your address from Solana RPC, CSV export | Live |
+| Wallet USDC and SOL balance on home and Add crypto | Live |
+| Linking extra Solana wallets (signature-proven) | Live, list kept in this browser |
 | Rule, spend policy, kill switch | Live in the app, stored in this browser. The on-chain policy PDA is not built; the policy screen says so. |
 | Venue rates, positions, routes | **Illustrative sample data** (`lib/sample.ts`), always inside an outlined region with the badge. Venue names are generic so no real venue is shown with an invented rate. |
 | Building and simulating transactions | Not built. Sample venues have no adapter, so the slippage and simulation checks fail and say why. |

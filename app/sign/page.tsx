@@ -52,7 +52,7 @@ export default function SignPage() {
         setError({ reason: out.reason, fix: out.fix });
         return;
       }
-      router.replace('/claim');
+      router.replace('/yid');
     } catch (e) {
       setError({ reason: `The wallet did not sign: ${(e as Error).message}`, fix: 'Approve the message in your wallet, or choose Use a different wallet.' });
     } finally {
@@ -62,7 +62,7 @@ export default function SignPage() {
 
   async function switchWallet() {
     await wallet?.disconnect().catch(() => undefined);
-    router.replace('/');
+    router.replace('/connect');
   }
 
   if (ready && walletsReady && !wallet) {
@@ -72,7 +72,7 @@ export default function SignPage() {
         <div className="yf-state">
           <h1 className="yf-state__title">No wallet connected</h1>
           <p className="yf-state__body">Connect a Solana wallet first. The sign-in message is built for the address you connect.</p>
-          <Link className="yf-btn yf-btn--primary" href="/">Connect wallet</Link>
+          <Link className="yf-btn yf-btn--primary" href="/connect">Connect wallet</Link>
         </div>
       </div>
     );
@@ -82,7 +82,7 @@ export default function SignPage() {
     <div className="yf-page">
       <OnboardNav address={wallet?.address ?? null} verified={false} />
       <header>
-        <p className="yf-eyebrow" style={{ margin: 0 }}>Step 2 of 3 · {wallet?.standardWallet.name ?? 'Wallet'}</p>
+        <p className="yf-eyebrow" style={{ margin: 0 }}>Step 2 of 2 · {wallet?.standardWallet.name ?? 'Wallet'}</p>
         <h1 className="yf-h1">Sign to verify</h1>
         <p className="yf-lede">
           Read the message below. It is exactly what your wallet will show. Signing it proves you hold the key for this

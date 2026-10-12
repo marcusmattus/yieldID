@@ -9,8 +9,17 @@ import type { Rule, SpendPolicy } from './policy';
  * a local mirror and is labelled as such on the policy screen.
  */
 
+export interface LinkedWallet {
+  chain: 'Solana' | 'EVM';
+  address: string;
+  label: string;
+  /** True when the wallet signed a message proving it is held by the same person. */
+  proven: boolean;
+}
+
 export interface AppState {
   rule: Rule;
+  wallets: LinkedWallet[];
   policy: SpendPolicy;
   handle: string | null;
   channels: { telegram: boolean; discord: boolean; slack: boolean; showAmounts: boolean };
@@ -39,6 +48,7 @@ export const defaultState = (): AppState => ({
     expiresAt: Date.now() + 30 * DAY,
     killSwitch: false,
   },
+  wallets: [],
   handle: null,
   channels: { telegram: false, discord: false, slack: false, showAmounts: false },
 });

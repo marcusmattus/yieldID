@@ -62,6 +62,12 @@ describe('YieldID record', () => {
     expect(verifySolanaSignature(parsed.sol, new TextEncoder().encode(parsed.body), new Uint8Array(Buffer.from(bs58(parsed.sig))))).toBe(true);
   });
 
+  it('carries extra proven Solana addresses in alt', () => {
+    const a = keypair().address, b = keypair().address, c = keypair().address;
+    const parsed = parseRecord(recordText(recordBody({ sol: a, alt: [b, c] }), 'sig'))!;
+    expect(parsed.alt).toEqual([b, c]);
+  });
+
   it('splits TXT strings at 255 characters', () => {
     const long = 'x'.repeat(300);
     expect(chunkTxt(long).map((c) => c.length)).toEqual([255, 45]);

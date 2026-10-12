@@ -4,6 +4,7 @@ import { Providers } from './providers';
 import './styles/tokens.css';
 import './styles/bundle.css';
 import './styles/app.css';
+import './styles/shell.css';
 
 export const metadata: Metadata = {
   title: 'YieldID',
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
   icons: { icon: '/brand/favicon.svg' },
 };
 
-export const viewport: Viewport = { themeColor: '#0e1512', width: 'device-width', initialScale: 1 };
+export const viewport: Viewport = { themeColor: '#eceae0', width: 'device-width', initialScale: 1 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
@@ -25,7 +26,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           rel="stylesheet"
         />
       </head>
-      <body className="yf-root" data-theme="dark">
+      <body className="yf-root" data-theme="light">
         <Providers>{children}</Providers>
       </body>
     </html>

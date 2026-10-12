@@ -12,6 +12,8 @@ export interface YidAddresses {
   sol: string;
   evm?: string;
   hl?: string;
+  /** Further Solana addresses, each proven by its own signature before it is listed. */
+  alt?: string[];
 }
 
 export interface ParsedRecord extends YidAddresses {
@@ -36,6 +38,7 @@ export function recordBody(a: YidAddresses): string {
   const parts = ['v=yid1', `sol=${a.sol}`];
   if (a.evm) parts.push(`evm=${a.evm}`);
   if (a.hl) parts.push(`hl=${a.hl}`);
+  if (a.alt && a.alt.length) parts.push(`alt=${a.alt.join(',')}`);
   return parts.join('; ');
 }
 
@@ -70,5 +73,17 @@ export function parseRecord(text: string): ParsedRecord | null {
   if (fields.get('v') !== 'yid1') return null;
   const sol = fields.get('sol');
   if (!sol || !sig) return null;
-  return { body, sig, sol, evm: fields.get('evm'), hl: fields.get('hl') };
+  const alt = fields.get('alt');
+  return { body, sig, sol, evm: fields.get('evm'), hl: fields.get('hl'), alt: alt ? alt.split(',').filter(Boolean) : undefined };
+}
+
+/** The message a second wallet signs to prove it belongs with the primary one. */
+export function linkMessage(primary: string, added: string, issuedAt: string): string {
+  return [
+    'Link this wallet to a YieldID.',
+    `Primary: ${primary}`,
+    `Adding: ${added}`,
+    `Issued At: ${issuedAt}`,
+    'This is a message, not a transaction. It moves nothing and grants nothing.',
+  ].join('\n');
 }

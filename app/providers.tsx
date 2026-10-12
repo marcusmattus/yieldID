@@ -35,9 +35,9 @@ export function Providers({ children }: { children: ReactNode }) {
         // Wallet first. Email is the secondary path; it creates an embedded Solana wallet the user can export.
         loginMethods: ['wallet', 'email'],
         appearance: {
-          theme: 'dark',
+          theme: 'light',
           accentColor: '#f2762e',
-          logo: '/brand/yieldid-logo-dark.svg',
+          logo: '/brand/yieldid-logo-light.svg',
           landingHeader: 'Connect wallet',
           showWalletLoginFirst: true,
           walletChainType: 'solana-only',
