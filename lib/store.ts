@@ -68,10 +68,20 @@ export function setStoreOwner(address: string) {
 }
 const listeners = new Set<() => void>();
 
+/** The snapshot useSyncExternalStore reads. Must return the same object until state changes. */
+export function readAppState(): AppState {
+  return load();
+}
+
 function load(): AppState {
   if (state) return state;
   const fallback = defaultState();
-  if (!owner) return fallback;
+  // Cache even without an owner: useSyncExternalStore needs a stable snapshot,
+  // and a fresh object per read makes React re-render forever (error #185).
+  if (!owner) {
+    state = fallback;
+    return state;
+  }
   try {
     const raw = window.localStorage.getItem(keyFor(owner));
     state = raw ? { ...fallback, ...(JSON.parse(raw) as Partial<AppState>) } : fallback;
