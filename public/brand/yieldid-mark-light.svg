@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" width="48" height="48" role="img" aria-label="YieldID">
+  <path d="M9 7 L24 24 L39 7" fill="none" stroke="#ac440f" stroke-width="6"/>
+  <path d="M24 24 V43" fill="none" stroke="#14201a" stroke-width="6"/>
+  <circle cx="24" cy="24" r="5.5" fill="#f4f2ea" stroke="#ac440f" stroke-width="3"/>
+</svg>

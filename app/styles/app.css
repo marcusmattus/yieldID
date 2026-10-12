@@ -1,0 +1,59 @@
+/* App-level additions. Every value comes from the YieldForge tokens. */
+
+html, body { margin: 0; min-height: 100%; }
+body.yf-root { min-height: 100vh; padding-top: var(--space-6); }
+
+.yf-brand { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; color: var(--ink); }
+.yf-brand__mark-arm { stroke: var(--ember-text); }
+.yf-brand__mark-stem { stroke: var(--ink); }
+.yf-brand__mark-node { fill: var(--surface); stroke: var(--ember-text); }
+
+.yf-nav { flex-wrap: wrap; row-gap: var(--space-2); padding-block: var(--space-2); }
+.yf-nav__right { display: flex; align-items: center; gap: var(--space-2); }
+.yf-iconbtn { display: inline-flex; align-items: center; justify-content: center; min-width: var(--touch-min); min-height: var(--touch-min); border-radius: var(--radius-sm); border: var(--border-hairline) solid var(--border-strong); background: transparent; color: var(--ink); cursor: pointer; font: inherit; font-size: 13px; padding: 0 var(--space-3); }
+.yf-iconbtn:hover { background: var(--surface-sunken); }
+
+.yf-wallet__icon { width: 32px; height: 32px; border-radius: var(--radius-sm); flex: none; background: var(--surface-sunken); display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: 700; color: var(--ink-muted); }
+.yf-wallet__icon img { width: 32px; height: 32px; border-radius: var(--radius-sm); }
+.yf-wallet__name { display: flex; flex-direction: column; }
+
+.yf-checkchips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.yf-checkchips label { display: inline-flex; align-items: center; gap: var(--space-2); min-height: var(--touch-min); padding: 0 var(--space-4); border: var(--border-hairline) solid var(--border-strong); border-radius: var(--radius-sm); font-size: 14px; color: var(--ink); cursor: pointer; }
+.yf-checkchips input { width: 18px; height: 18px; accent-color: var(--ember); }
+fieldset.yf-fieldset { border: 0; padding: 0; margin: 0; display: flex; flex-direction: column; gap: var(--space-2); }
+fieldset.yf-fieldset legend { padding: 0; margin-bottom: var(--space-2); }
+
+.yf-select { flex: 1 1 auto; min-height: var(--touch-min); padding: 0 var(--space-4); border: 0; background: transparent; color: var(--ink); font-family: var(--font-mono); font-size: 13px; }
+.yf-select option { background: var(--surface); color: var(--ink); }
+
+.yf-error-text { color: var(--danger); font-size: 14px; line-height: 22px; margin: 0; }
+.yf-ok-text { color: var(--success); font-size: 14px; line-height: 22px; margin: 0; }
+
+.yf-board-cards { display: none; flex-direction: column; gap: var(--space-3); }
+@media (max-width: 640px) {
+  body.yf-root { padding-top: var(--space-2); }
+  .yf-board-table { display: none; }
+  .yf-board-cards { display: flex; }
+  .yf-nav__links { order: 3; width: 100%; overflow-x: auto; flex-wrap: nowrap; }
+  .yf-h1 { font-size: 28px; line-height: 34px; }
+  .yf-check { grid-template-columns: 64px 1fr; }
+}
+
+.yf-visually-hidden { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+
+/* Board table: keep names and status words on one line; the wrapper scrolls on narrow screens. */
+.yf-board-table th[scope='row'] { white-space: nowrap; min-width: 160px; }
+.yf-board-table .yf-badge { white-space: nowrap; }
+.yf-board-table td:last-child { padding-right: var(--space-4); }
+
+/* Narrow screens. Declared here (loaded after the component sheet) so they win. */
+@media (max-width: 760px) {
+  .yf-split, .yf-split--even, .yf-fields { grid-template-columns: minmax(0, 1fr); }
+  .yf-math { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .yf-offboard li, .yf-scopes li { grid-template-columns: minmax(0, 1fr); gap: var(--space-1); }
+  .yf-page { padding-left: var(--gutter-mobile); padding-right: var(--gutter-mobile); }
+  .yf-nav { padding: var(--space-2) var(--space-4); gap: var(--space-3); }
+  .yf-nav__right { width: 100%; justify-content: space-between; order: 2; }
+}
+
+.yf-root a.yf-wallet { color: var(--ink-secondary); }

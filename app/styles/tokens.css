@@ -1,0 +1,40 @@
+/* YieldForge tokens as CSS variables, generated from the design system's tokens.json. Dark is default. */
+.yf-root {
+  --bg: #0e1512; --surface: #17221d; --surface-sunken: #0a100e; --border: #243029; --border-strong: #6f8276;
+  --ink: #edefe9; --ink-secondary: #b7c2b6; --ink-muted: #8a988b;
+  --ember: #f2762e; --ember-hover: #ffa066; --ember-text: #f2762e; --on-ember: #14201a;
+  --teal: #3cc9b0; --teal-text: #3cc9b0; --on-teal: #0b1714;
+  --amber: #e8c547; --amber-text: #e8c547; --on-amber: #14201a;
+  --success: #a9e9c4; --warning: #e8c547; --danger: #f4566f; --info: #86b9ee;
+  --status-live: #3cc9b0; --status-sample: #f2762e; --status-unverified: #bfae7e;
+  --focus-ring: #ffa066; --scrim: rgba(10, 16, 14, 0.78); --shadow-overlay: 0 16px 40px rgba(0, 0, 0, 0.55);
+  --font-display: "Space Grotesk", "DM Sans", system-ui, sans-serif;
+  --font-body: "DM Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: Menlo, Consolas, "SF Mono", ui-monospace, monospace;
+  --space-1: 4px; --space-2: 8px; --space-3: 12px; --space-4: 16px; --space-5: 20px; --space-6: 24px;
+  --space-8: 32px; --space-10: 40px; --space-12: 48px; --space-16: 64px; --space-20: 80px;
+  --space-slide-1: 24px; --space-slide-2: 48px; --space-slide-3: 72px; --space-slide-4: 96px;
+  --radius-sm: 10px; --radius-md: 14px; --radius-lg: 16px; --radius-pill: 999px;
+  --content-max: 1100px; --gutter-mobile: 16px; --gutter-desktop: 40px; --nav-height: 64px; --touch-min: 44px;
+  --slide-width: 1920px; --slide-height: 1080px; --measure: 68ch; --border-hairline: 1px; --accent-bar: 4px;
+}
+.yf-root[data-theme="light"] {
+  --bg: #f4f2ea; --surface: #ffffff; --surface-sunken: #eceae0; --border: #d9d6c8; --border-strong: #82806f;
+  --ink: #14201a; --ink-secondary: #3b4a41; --ink-muted: #5e6b62;
+  --ember-text: #ac440f; --teal-text: #0f6657; --amber-text: #6f5200;
+  --success: #15754c; --warning: #6f5200; --danger: #8a0c2b; --info: #1f5c96;
+  --status-live: #0f6657; --status-sample: #ac440f; --status-unverified: #6b5b2e;
+  --focus-ring: #c4531a; --scrim: rgba(20, 32, 26, 0.45); --shadow-overlay: 0 16px 40px rgba(20, 32, 26, 0.16);
+}
+.yf-root { min-height: 100%; }
+.yf-root a { color: var(--ember-text); }
+.yf-root a.yf-nav__link, .yf-root a.yf-btn--primary { color: inherit; }
+.yf-root a.yf-btn--primary { color: var(--on-ember); }
+.yf-root a.yf-btn--secondary { color: var(--ink); }
+.yf-root a.yf-nav__link { color: var(--ink-secondary); }
+.yf-root a.yf-nav__link[aria-current="page"] { color: var(--ink); }
+@media (max-width: 760px) {
+  .yf-split, .yf-split--even, .yf-fields, .yf-math { grid-template-columns: minmax(0, 1fr); }
+  .yf-page { padding-left: var(--gutter-mobile); padding-right: var(--gutter-mobile); }
+  .yf-offboard li, .yf-scopes li { grid-template-columns: minmax(0, 1fr); }
+}
