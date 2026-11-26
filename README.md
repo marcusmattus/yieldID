@@ -10,7 +10,8 @@ Next.js 15 (App Router) · TypeScript · Privy (Phantom, Solana wallets, email) 
 npm install
 cp .env.example .env.local   # then fill it in, see below
 npm run dev                  # http://localhost:3000
-npm test                     # 20 tests: ranking, policy checks, SIWS, signatures, YieldID records
+npm test                     # ranking, policy, SIWS, YieldID records, agent keys, x402, pot, cards, MCP
+npm run mcp                  # local MCP server for agents (docs/AGENTS.md)
 ```
 
 ### `.env.local`
@@ -30,6 +31,8 @@ Add `http://localhost:3000` (and your deploy URL) to **Allowed origins** in the 
 - `/` landing page: what YieldID does, the net-rate example, the YieldID record, three ways to add crypto, and **Connect wallet** buttons into the app.
 - The signed-in app is a light shell (dark icon rail, rounded main card, Earn / Build switch, theme toggle). Home (`/forge`) shows your **live** wallet USDC balance read from Solana, linked wallets, quick actions, gross vs net per venue and next steps.
 - `/yid` YieldID maker: pick a handle (DNS availability check), add wallets (each extra Solana wallet signs a link message verified by `/api/wallets/prove`; EVM addresses are listed as not signed), sign the record, publish and verify.
+- `/agents`: API keys for AI agents and exchange-side tools (scopes, caps, expiry, kill switch), proposals and payments agents made, and how to connect over MCP. See [docs/AGENTS.md](docs/AGENTS.md).
+- `/cards`: stablecoin virtual cards (sandbox until an issuer is connected) and the Apple Pay / Google Pay flow.
 - `/add-crypto`: your address with QR code and copy, the exact network and USDC mint, a live balance that rechecks every 15 s and shows arrivals, and guides for exchange, CCTP bridge, and card/bank through Privy's `useFundWallet`.
 
 ## How sign-in works
@@ -65,6 +68,10 @@ Gross, annualised move cost, net and edge stay separate fields and columns. The 
 | Rule, spend policy, kill switch | Live in the app, stored in this browser. The on-chain policy PDA is not built; the policy screen says so. |
 | Venue rates, positions, routes | **Illustrative sample data** (`lib/sample.ts`), always inside an outlined region with the badge. Venue names are generic so no real venue is shown with an invented rate. |
 | Building and simulating transactions | Not built. Sample venues have no adapter, so the slippage and simulation checks fail and say why. |
+| Agent keys, REST API, MCP (remote `/api/mcp` and local `npm run mcp`) | Live. Scoped keys with caps and a kill switch on `/agents`. Stored in a local JSON file; needs a database to deploy (docs/AGENTS.md). |
+| x402 | Live code: agents pay USDC on Solana from their own wallet; `/api/x402/rates` charges per call once a facilitator is configured. |
+| Yield pot for agents | Wallet balance live; rates sample; deposit/withdraw proposals are blocked until a live venue adapter exists. |
+| Stablecoin cards, Apple Pay / Google Pay | **Sandbox** issuer only. Real cards need an issuing partner and native apps; see docs/AGENTS.md. |
 | Telegram, Discord, Slack bots | Not built. The channels screen shows scopes and a post preview. |
 | y-stables (yUSD, yGBP, yUSDC, yUSDT) | Design only; issuer, custodian and authorities are placeholders. |
 
@@ -84,11 +91,21 @@ app/
   api/siws/{nonce,verify} Sign-in
   api/session             Session read / disconnect
   api/yid/resolve         DNS resolve + signature check
+  api/agent/*             Agent REST API (keys, pot, cards, x402)
+  api/mcp                 Remote MCP endpoint
+  api/x402/rates          x402-paid rate board
   providers.tsx           PrivyProvider (Solana-only, Phantom first)
   styles/                 YieldForge tokens + component sheet + app additions
 components/               Nav, wallet chip, data status, checks, math strip
 lib/                      rates, policy, siws, yid, base58, store, sample data
 lib/server/               session cookies, ed25519 verification (server only)
+lib/agent/                keys, scopes, store, service layer for agents
+lib/x402/                 x402 client (pay) and paywall (charge), Solana exact scheme
+lib/pot/                  yield pot status, rates, proposals, venue adapter interface
+lib/card/                 card issuer interface, sandbox issuer, partner stub
+lib/mcp/                  MCP tools and backends
+mcp/stdio.ts              local MCP server
+docs/AGENTS.md            agent guide and what to supply to go live
 public/brand/             YieldID logo, mark and favicons
 tests/                    vitest
 ```

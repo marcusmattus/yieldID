@@ -19,11 +19,13 @@ const RAIL: Array<{ href: string; label: string; icon: keyof typeof Icon; match?
   { href: '/stables', label: 'Stables', icon: 'stables' },
   { href: '/adapters', label: 'Adapters', icon: 'adapters' },
   { href: '/policy', label: 'Spend policy', icon: 'policy' },
+  { href: '/cards', label: 'Cards', icon: 'card' },
+  { href: '/agents', label: 'Agents', icon: 'bolt' },
   { href: '/channels', label: 'Channels', icon: 'channels' },
   { href: '/tracker', label: 'Tracker', icon: 'tracker' },
 ];
 
-const BUILD = ['/adapters', '/policy', '/channels', '/rules'];
+const BUILD = ['/agents', '/adapters', '/policy', '/channels', '/rules'];
 
 function useTheme() {
   const [theme, setTheme] = useState<'light' | 'dark'>('light');
