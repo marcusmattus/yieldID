@@ -10,7 +10,7 @@ Next.js 15 (App Router) · TypeScript · Privy (Phantom, Solana wallets, email) 
 npm install
 cp .env.example .env.local   # then fill it in, see below
 npm run dev                  # http://localhost:3000
-npm test                     # 20 tests: ranking, policy checks, SIWS, signatures, YieldID records
+npm test                     # 50 tests: ranking, policy, SIWS, YieldID records, Ramp webhook signatures, x402 pay flow, live pool and Bazaar mapping
 ```
 
 ### `.env.local`
@@ -22,6 +22,12 @@ npm test                     # 20 tests: ranking, policy checks, SIWS, signature
 | `SESSION_SECRET` | 32+ random characters. Signs the session and nonce cookies. |
 | `NEXT_PUBLIC_SOLANA_RPC` | Solana RPC URL. The public one rate-limits; use Helius, Triton or QuickNode. |
 | `NEXT_PUBLIC_YID_DOMAIN` | Domain whose DNS holds YieldID records (`_yid.<handle>.<domain>`). |
+| `NEXT_PUBLIC_RAMP_HOST_API_KEY` | Ramp Network host API key. Empty opens Ramp's test environment (Base Sepolia test USDC only). |
+| `NEXT_PUBLIC_RAMP_ENV` | `production` or `demo`. Defaults to production when a key is set. |
+| `X402_NETWORKS` | Networks the paid API accepts: `solana`, `solana-devnet`, `base`, `base-sepolia`. Default `solana-devnet,base-sepolia`. |
+| `X402_PAY_TO_SOLANA`, `X402_PAY_TO_EVM` | Your own addresses that receive x402 payments. A network without one is left out. |
+| `X402_PRICE_USD` | Price per paid call, in USDC. Default `0.001`. |
+| `X402_FACILITATOR_URL` | Verifies and settles payments. Default `https://x402.org/facilitator` (testnets). For mainnet, e.g. `https://facilitator.payai.network`. |
 
 Add `http://localhost:3000` (and your deploy URL) to **Allowed origins** in the Privy dashboard.
 
@@ -63,7 +69,11 @@ Gross, annualised move cost, net and edge stay separate fields and columns. The 
 | Wallet USDC and SOL balance on home and Add crypto | Live |
 | Linking extra Solana wallets (signature-proven) | Live, list kept in this browser |
 | Rule, spend policy, kill switch | Live in the app, stored in this browser. The on-chain policy PDA is not built; the policy screen says so. |
-| Venue rates, positions, routes | **Illustrative sample data** (`lib/sample.ts`), always inside an outlined region with the badge. Venue names are generic so no real venue is shown with an invented rate. |
+| Discover: stable venues ranked net (`/discover`, `/api/discover`) | Live, from DefiLlama's yields API. Base APY only; move cost is a stated estimate. |
+| Discover: paid x402 services | Live, from the x402 Bazaar (Coinbase CDP). Listed by operators, not vetted. |
+| Ramp on-ramp (Add crypto → Card or bank) | Live widget; production needs a Ramp host API key. Webhook at `/api/ramp/webhook` checks Ramp's signature. |
+| Paid agent API `/api/x402/yields` | Live x402 v2. Takes test USDC until you set mainnet networks and payTo addresses. |
+| Signal board venue rates, positions, routes | **Illustrative sample data** (`lib/sample.ts`), always inside an outlined region with the badge. Venue names are generic so no real venue is shown with an invented rate. |
 | Building and simulating transactions | Not built. Sample venues have no adapter, so the slippage and simulation checks fail and say why. |
 | Telegram, Discord, Slack bots | Not built. The channels screen shows scopes and a post preview. |
 | y-stables (yUSD, yGBP, yUSDC, yUSDT) | Design only; issuer, custodian and authorities are placeholders. |
@@ -71,6 +81,21 @@ Gross, annualised move cost, net and edge stay separate fields and columns. The 
 ### Adding a live venue
 
 Write an adapter that returns a `VenueRead` (see `lib/rates.ts`) with `source: 'live'` and a real `readAt`, and use it in `lib/useBoard.ts` in place of `sampleVenues`. The board, rule tester, proposal and channel preview all switch to it, and the data status becomes LIVE automatically. To make proposals signable, have the adapter build and simulate the transaction and pass `simulationOk` and `simulatedSlippageBp` into `runChecks`. Then sign with Privy's `useSignTransaction` from `@privy-io/react-auth/solana`.
+
+## On-ramp, DeFi connection and the agent layer
+
+**Ramp on-ramp.** `components/RampOnramp.tsx` opens Ramp Network's widget for `SOLANA_USDC` (or `BASE_USDC` to a linked EVM address), delivered to the user's own wallet. After a purchase starts, the page follows it with Ramp's purchase-status API using the purchase's own view token. Ramp's webhook (`webhookStatusUrl`, set automatically on https deploys) is verified in `lib/server/ramp.ts`: ECDSA secp256k1 over the key-sorted JSON body, against Ramp's published key for the configured environment.
+
+**Live DeFi connection.** `lib/server/discovery.ts` reads DefiLlama's open pools every 5 minutes, keeps plain stablecoin deposits (single asset, no IL, at least $1m TVL) on Solana, Base, Arbitrum, Ethereum and Hyperliquid, and ranks them with the same `rankVenues` as the board. Gross is base APY; reward-token APY is shown, never counted. Move cost uses the estimate in `MOVE_COST_MODEL` (`lib/defi/pools.ts`).
+
+**x402 agent API.** `lib/server/x402.ts` wraps a route with x402 v2 (`@x402/core`): no payment → `402` with a `PAYMENT-REQUIRED` header listing USDC on each configured network; a signed payment is verified by the facilitator, the handler runs, and the payment settles only if the handler succeeded. A failed read or a settle error never hands out paid data and never charges the agent for a failure on our side. The route declares the Bazaar discovery extension, so a facilitator that catalogues (CDP's) lists it for other agents.
+
+**Discovery layer.** `/discover` shows both live indexes: where stablecoins earn net, and the stablecoin-priced x402 services agents pay for (ranked by distinct payers, at most two per host). Free summary at `/api/discover`; the full feed at `/api/x402/yields` costs `X402_PRICE_USD` per call.
+
+```bash
+curl "https://<your-deploy>/api/discover?horizon=30&chain=Solana,Base&asset=USDC"
+curl -i "https://<your-deploy>/api/x402/yields?horizon=30&chain=Solana&asset=USDC"   # 402 + price
+```
 
 ## Structure
 

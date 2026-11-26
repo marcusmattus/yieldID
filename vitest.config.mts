@@ -6,6 +6,7 @@ export default defineConfig({
     alias: {
       // 'server-only' throws outside Next's server bundle; tests run in Node.
       'server-only': fileURLToPath(new URL('./tests/server-only-stub.ts', import.meta.url)),
+      '@': fileURLToPath(new URL('.', import.meta.url)),
     },
   },
   test: { include: ['tests/**/*.test.ts'] },
