@@ -15,6 +15,8 @@ const LINKS = [
   ['/stables', 'Stables'],
   ['/adapters', 'Adapters'],
   ['/policy', 'Policy'],
+  ['/cards', 'Cards'],
+  ['/agents', 'Agents'],
   ['/channels', 'Channels'],
   ['/tracker', 'Tracker'],
 ] as const;

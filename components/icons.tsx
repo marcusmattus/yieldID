@@ -25,6 +25,7 @@ export const Icon = {
   wallet: (s?: number) => <Svg size={s}><path d="M4 7a2 2 0 0 1 2-2h12v4" /><rect x="4" y="7" width="16" height="13" rx="3" /><circle cx="16" cy="13.5" r="1.3" /></Svg>,
   copy: (s?: number) => <Svg size={s}><rect x="8" y="8" width="12" height="12" rx="3" /><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2" /></Svg>,
   check: (s?: number) => <Svg size={s}><path d="m5 12 4.5 4.5L19 7" /></Svg>,
+  card: (s?: number) => <Svg size={s}><rect x="3" y="5" width="18" height="14" rx="3" /><path d="M3 10h18M7 15h4" /></Svg>,
   bolt: (s?: number) => <Svg size={s}><path d="M13 3 5 14h6l-1 7 8-11h-6z" /></Svg>,
   globe: (s?: number) => <Svg size={s}><circle cx="12" cy="12" r="9" /><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18" /></Svg>,
   logout: (s?: number) => <Svg size={s}><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3" /><path d="M10 16l-4-4 4-4M6 12h10" /></Svg>,

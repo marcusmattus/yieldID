@@ -13,6 +13,20 @@ export interface Rule {
   includeUnverified: boolean;
 }
 
+/** The rule every new wallet starts with. Shared by the app and the agent API. */
+export const DEFAULT_RULE: Rule = {
+  edgeBp: 100,
+  horizonDays: 30,
+  minHoldMin: 1440,
+  minCapacity: 10_000,
+  maxMove: 100_000,
+  maxReadAgeSec: 120,
+  assets: ['USDC', 'yUSD', 'yUSDC'],
+  chains: ['Solana', 'Hyperliquid', 'Base'],
+  sleeves: ['forge', 'rwa'],
+  includeUnverified: false,
+};
+
 export interface SpendPolicy {
   perTxCap: number;
   dailyCap: number;

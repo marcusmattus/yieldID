@@ -1,7 +1,7 @@
 'use client';
 
 import { useSyncExternalStore } from 'react';
-import type { Rule, SpendPolicy } from './policy';
+import { DEFAULT_RULE, type Rule, type SpendPolicy } from './policy';
 
 /**
  * The user's rule and spend policy, kept in this browser for the demo.
@@ -30,18 +30,7 @@ export interface AppState {
 const DAY = 86_400_000;
 
 export const defaultState = (): AppState => ({
-  rule: {
-    edgeBp: 100,
-    horizonDays: 30,
-    minHoldMin: 1440,
-    minCapacity: 10_000,
-    maxMove: 100_000,
-    maxReadAgeSec: 120,
-    assets: ['USDC', 'yUSD', 'yUSDC'],
-    chains: ['Solana', 'Hyperliquid', 'Base'],
-    sleeves: ['forge', 'rwa'],
-    includeUnverified: false,
-  },
+  rule: { ...DEFAULT_RULE, assets: [...DEFAULT_RULE.assets], chains: [...DEFAULT_RULE.chains], sleeves: [...DEFAULT_RULE.sleeves] },
   policy: {
     perTxCap: 50_000,
     dailyCap: 50_000,
