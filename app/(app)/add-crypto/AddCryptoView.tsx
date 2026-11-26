@@ -4,6 +4,7 @@ import { useFundWallet } from '@privy-io/react-auth/solana';
 import QRCode from 'qrcode';
 import { useEffect, useRef, useState } from 'react';
 import { Icon } from '@/components/icons';
+import { RampOnramp } from '@/components/RampOnramp';
 import { DataStatus, Disclaimer } from '@/components/ui';
 import { fmtUsdc, USDC_MINT, useBalances } from '@/lib/solana';
 
@@ -122,10 +123,15 @@ export function AddCryptoView({ address }: { address: string }) {
         )}
         {tab === 'card' && (
           <div role="tabpanel" id="panel-card" aria-labelledby="tab-card" className="yf-stack">
-            <p className="yf-small">Privy opens its on-ramp partners. They run identity checks and send the crypto straight to your address; YieldID never sees your card or documents.</p>
-            <button type="button" className="yf-pillbtn yf-pillbtn--ember" style={{ alignSelf: 'flex-start' }} onClick={buy}>{Icon.globe(18)} Buy with card or bank</button>
-            {fundError && <p className="yf-error-text" role="alert">{fundError}</p>}
-            <p className="yf-fine">Availability, fees and limits depend on your country and the partner. Funds can take a few minutes to arrive.</p>
+            <RampOnramp solanaAddress={address} />
+            <details className="yf-fine">
+              <summary>Ramp not available where you are? Try Privy&apos;s partners</summary>
+              <div className="yf-stack" style={{ marginTop: 12 }}>
+                <p className="yf-small">Privy opens its on-ramp partners. They run identity checks and send the crypto straight to your address.</p>
+                <button type="button" className="yf-btn yf-btn--text" style={{ alignSelf: 'flex-start' }} onClick={buy}>Buy through Privy</button>
+                {fundError && <p className="yf-error-text" role="alert">{fundError}</p>}
+              </div>
+            </details>
           </div>
         )}
       </section>

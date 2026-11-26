@@ -11,6 +11,7 @@ import { Brand } from './ui';
 const LINKS = [
   ['/forge', 'Forge'],
   ['/board', 'Signal'],
+  ['/discover', 'Discover'],
   ['/rules', 'Rules'],
   ['/stables', 'Stables'],
   ['/adapters', 'Adapters'],

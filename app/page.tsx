@@ -25,6 +25,7 @@ export default function Landing() {
             <a href="#net">Ranked net</a>
             <a href="#yid">YieldID maker</a>
             <a href="#crypto">Add crypto</a>
+            <Link href="/id">Look up a YieldID</Link>
           </nav>
           <ConnectButton />
         </header>
@@ -37,7 +38,7 @@ export default function Landing() {
             </p>
             <div className="yf-row" style={{ gap: 12 }}>
               <ConnectButton tone="ember" />
-              <a href="#how" className="yf-pillbtn yf-pillbtn--ghost">See how it works</a>
+              <Link href="/id" className="yf-pillbtn yf-pillbtn--ghost">Check a wallet&apos;s yield</Link>
             </div>
             <p className="yf-fine" style={{ marginTop: 16 }}>Connecting is a public-key read. No transaction, no allowance, no fee.</p>
           </div>

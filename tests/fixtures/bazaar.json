@@ -1,0 +1,2129 @@
+[
+ {
+  "accepts": [
+   {
+    "amount": "50000",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "extra": {
+     "name": "USD Coin",
+     "version": "2"
+    },
+    "maxTimeoutSeconds": 3600,
+    "network": "eip155:8453",
+    "payTo": "0x17cd53C04D707eF0Dd615EF56c633f02915a7905",
+    "scheme": "exact"
+   }
+  ],
+  "description": "Pay the send-native execution fee (native coin transfer)",
+  "extensions": {
+   "bazaar": {
+    "info": {
+     "input": {
+      "method": "GET",
+      "queryParams": {},
+      "type": "http"
+     },
+     "output": {
+      "example": {
+       "status": "ok"
+      },
+      "type": "json"
+     }
+    },
+    "schema": {
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+     "properties": {
+      "input": {
+       "additionalProperties": false,
+       "properties": {
+        "method": {
+         "enum": [
+          "GET"
+         ],
+         "type": "string"
+        },
+        "queryParams": {
+         "additionalProperties": false,
+         "properties": {},
+         "required": [],
+         "type": "object"
+        },
+        "type": {
+         "const": "http",
+         "type": "string"
+        }
+       },
+       "required": [
+        "type",
+        "method"
+       ],
+       "type": "object"
+      },
+      "output": {
+       "properties": {
+        "example": {
+         "additionalProperties": false,
+         "properties": {
+          "status": {
+           "description": "ok once the execution fee is settled",
+           "enum": [
+            "ok"
+           ],
+           "type": "string"
+          }
+         },
+         "required": [
+          "status"
+         ],
+         "type": "object"
+        },
+        "type": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "type"
+       ],
+       "type": "object"
+      }
+     },
+     "required": [
+      "input"
+     ],
+     "type": "object"
+    }
+   },
+   "eip2612GasSponsoring": {},
+   "erc20ApprovalGasSponsoring": {}
+  },
+  "lastUpdated": "2026-11-26T05:06:47.214Z",
+  "quality": {
+   "l30DaysTotalCalls": 12729,
+   "l30DaysUniquePayers": 6689,
+   "lastCalledAt": "2026-11-26T00:10:25.866Z"
+  },
+  "resource": "https://keyring-agent.blockchhub.link/api/send-native",
+  "type": "http",
+  "x402Version": 2
+ },
+ {
+  "accepts": [
+   {
+    "amount": "20000",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "extra": {
+     "name": "USD Coin",
+     "version": "2"
+    },
+    "maxTimeoutSeconds": 300,
+    "network": "eip155:8453",
+    "payTo": "0x7284D41b5b852F2bd4c99bDf95043D84452d299C",
+    "scheme": "exact"
+   }
+  ],
+  "description": "Any agent can buy a Token Verdict over x402: AI grade, roast and live onchain metrics for any Base, Solana or Robinhood token. $0.02 in USDC, no account.\n\nCheck supported_token_chains in the quote for this deployment. Payment settles on Base. Includes a one-line verdict, shareable page and card image. No API key. Entertainment, not trading advice. Contact: support@ax1.vc.",
+  "extensions": {
+   "bazaar": {
+    "info": {
+     "input": {
+      "body": {
+       "tokenAddress": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913"
+      },
+      "bodyType": "json",
+      "method": "POST",
+      "type": "http"
+     },
+     "output": {
+      "example": {
+       "image_url": "https://ax1-new.vercel.app/api/q-verdict/share/abcdefghijklmnopqrstuv/card",
+       "operation_id": "4f7b2c1e-8a4d-4e9f-9c21-0b6d7a5e1f22",
+       "page_url": "https://ax1-new.vercel.app/q-verdict/abcdefghijklmnopqrstuv",
+       "payment": {
+        "amount_raw": "20000",
+        "network": "eip155:8453",
+        "status": "paid",
+        "tx_hash": "0x0000000000000000000000000000000000000000000000000000000000000000"
+       },
+       "recovery": {
+        "method": "POST",
+        "url": "https://ax1-new.vercel.app/api/dashboard/q-verdict/resource"
+       },
+       "result": {
+        "disclaimer": "Not financial advice.",
+        "fromCache": false,
+        "generatedAt": "2026-10-06T00:00:00.000Z",
+        "grade": "MID",
+        "metrics": {
+         "fetchedAt": "2026-10-06T00:00:00.000Z",
+         "metrics": [
+          {
+           "availability": "unavailable",
+           "key": "liquidity_usd",
+           "label": "Liquidity",
+           "provenance": null,
+           "unavailableReason": "not_reported",
+           "unit": "USD",
+           "value": null
+          }
+         ],
+         "ticker": "USDC",
+         "tokenAddress": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+         "tokenName": "USD Coin"
+        },
+        "one_liner": "An incomplete snapshot, not a trading signal",
+        "roast": "Liquidity data is unavailable in this example. An incomplete snapshot is not a trading signal."
+       },
+       "status": "paid",
+       "status_url": "https://ax1-new.vercel.app/api/q-verdict/operations/4f7b2c1e-8a4d-4e9f-9c21-0b6d7a5e1f22"
+      },
+      "type": "json"
+     }
+    },
+    "schema": {
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+     "properties": {
+      "input": {
+       "properties": {
+        "body": {
+         "additionalProperties": false,
+         "allOf": [
+          {
+           "else": {
+            "properties": {
+             "tokenAddress": {
+              "pattern": "^0x[0-9a-fA-F]{40}$"
+             }
+            }
+           },
+           "if": {
+            "properties": {
+             "chain": {
+              "const": "solana"
+             }
+            },
+            "required": [
+             "chain"
+            ]
+           },
+           "then": {
+            "properties": {
+             "tokenAddress": {
+              "pattern": "^[1-9A-HJ-NP-Za-km-z]{32,44}$"
+             }
+            }
+           }
+          }
+         ],
+         "properties": {
+          "chain": {
+           "description": "Default base. Solana requires chain=solana and deployment readiness; supported chains are listed in supported_token_chains of the unsigned quote.",
+           "enum": [
+            "base",
+            "solana"
+           ],
+           "type": "string"
+          },
+          "requestKey": {
+           "description": "Optional correlation key. Does not replace the original payment authorization for recovery.",
+           "maxLength": 128,
+           "minLength": 16,
+           "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{15,127}$",
+           "type": "string"
+          },
+          "tokenAddress": {
+           "description": "Base EVM contract (case-insensitive) or Solana base58 mint (case-sensitive, decodes to 32 bytes).",
+           "type": "string"
+          }
+         },
+         "required": [
+          "tokenAddress"
+         ],
+         "type": "object"
+        },
+        "bodyType": {
+         "const": "json"
+        },
+        "method": {
+         "const": "POST"
+        },
+        "type": {
+         "const": "http"
+        }
+       },
+       "required": [
+        "type",
+        "method",
+        "bodyType",
+        "body"
+       ],
+       "type": "object"
+      },
+      "output": {
+       "properties": {
+        "example": {
+         "additionalProperties": false,
+         "allOf": [
+          {
+           "else": {
+            "properties": {
+             "image_url": {
+              "type": "null"
+             },
+             "page_url": {
+              "type": "null"
+             },
+             "payment": {
+              "properties": {
+               "status": {
+                "enum": [
+                 "pending",
+                 "unpaid"
+                ]
+               },
+               "tx_hash": {
+                "type": "null"
+               }
+              }
+             },
+             "result": {
+              "type": "null"
+             }
+            }
+           },
+           "if": {
+            "properties": {
+             "status": {
+              "const": "paid"
+             }
+            },
+            "required": [
+             "status"
+            ]
+           },
+           "then": {
+            "properties": {
+             "image_url": {
+              "type": "string"
+             },
+             "page_url": {
+              "type": "string"
+             },
+             "payment": {
+              "properties": {
+               "status": {
+                "const": "paid"
+               },
+               "tx_hash": {
+                "type": "string"
+               }
+              }
+             },
+             "result": {
+              "type": "object"
+             }
+            }
+           }
+          }
+         ],
+         "properties": {
+          "image_url": {
+           "format": "uri",
+           "type": [
+            "string",
+            "null"
+           ]
+          },
+          "operation_id": {
+           "format": "uuid",
+           "type": "string"
+          },
+          "page_url": {
+           "format": "uri",
+           "type": [
+            "string",
+            "null"
+           ]
+          },
+          "payment": {
+           "additionalProperties": false,
+           "properties": {
+            "amount_raw": {
+             "description": "USDC atomic units, 6 decimals.",
+             "pattern": "^[0-9]+$",
+             "type": "string"
+            },
+            "network": {
+             "const": "eip155:8453"
+            },
+            "status": {
+             "enum": [
+              "pending",
+              "paid",
+              "unpaid"
+             ]
+            },
+            "tx_hash": {
+             "pattern": "^0x[0-9a-fA-F]{64}$",
+             "type": [
+              "string",
+              "null"
+             ]
+            }
+           },
+           "required": [
+            "status",
+            "amount_raw",
+            "network",
+            "tx_hash"
+           ],
+           "type": "object"
+          },
+          "recovery": {
+           "additionalProperties": false,
+           "properties": {
+            "method": {
+             "const": "POST"
+            },
+            "url": {
+             "format": "uri",
+             "type": "string"
+            }
+           },
+           "required": [
+            "url",
+            "method"
+           ],
+           "type": "object"
+          },
+          "result": {
+           "additionalProperties": false,
+           "properties": {
+            "disclaimer": {
+             "const": "Not financial advice."
+            },
+            "fromCache": {
+             "type": "boolean"
+            },
+            "generatedAt": {
+             "format": "date-time",
+             "type": "string"
+            },
+            "grade": {
+             "enum": [
+              "BASED",
+              "MID",
+              "COOKED",
+              "RADIOACTIVE"
+             ]
+            },
+            "metrics": {
+             "additionalProperties": false,
+             "properties": {
+              "fetchedAt": {
+               "format": "date-time",
+               "type": "string"
+              },
+              "metrics": {
+               "items": {
+                "additionalProperties": false,
+                "properties": {
+                 "availability": {
+                  "enum": [
+                   "available",
+                   "unavailable"
+                  ]
+                 },
+                 "key": {
+                  "type": "string"
+                 },
+                 "label": {
+                  "type": "string"
+                 },
+                 "provenance": {
+                  "additionalProperties": false,
+                  "properties": {
+                   "blockNumber": {
+                    "pattern": "^[0-9]+$",
+                    "type": [
+                     "string",
+                     "null"
+                    ]
+                   },
+                   "observedAt": {
+                    "format": "date-time",
+                    "type": "string"
+                   },
+                   "source": {
+                    "enum": [
+                     "onchain",
+                     "token_metrics_provider",
+                     "derived"
+                    ]
+                   }
+                  },
+                  "required": [
+                   "source",
+                   "observedAt",
+                   "blockNumber"
+                  ],
+                  "type": [
+                   "object",
+                   "null"
+                  ]
+                 },
+                 "unavailableReason": {
+                  "enum": [
+                   null,
+                   "not_reported",
+                   "not_applicable",
+                   "provider_error",
+                   "conflicting_sources",
+                   "stale"
+                  ]
+                 },
+                 "unit": {
+                  "type": [
+                   "string",
+                   "null"
+                  ]
+                 },
+                 "value": {
+                  "description": "Numeric values remain strings; unavailable values are null, never zero.",
+                  "type": [
+                   "string",
+                   "null"
+                  ]
+                 }
+                },
+                "required": [
+                 "key",
+                 "label",
+                 "availability",
+                 "value",
+                 "unit",
+                 "provenance",
+                 "unavailableReason"
+                ],
+                "type": "object"
+               },
+               "type": "array"
+              },
+              "ticker": {
+               "type": "string"
+              },
+              "tokenAddress": {
+               "description": "Address on token_chain (absent means Base); Solana mint case is preserved.",
+               "pattern": "^(?:0x[0-9a-fA-F]{40}|[1-9A-HJ-NP-Za-km-z]{32,44})$",
+               "type": "string"
+              },
+              "tokenName": {
+               "type": [
+                "string",
+                "null"
+               ]
+              }
+             },
+             "required": [
+              "tokenAddress",
+              "ticker",
+              "tokenName",
+              "fetchedAt",
+              "metrics"
+             ],
+             "type": "object"
+            },
+            "one_liner": {
+             "maxLength": 70,
+             "type": "string"
+            },
+            "roast": {
+             "maxLength": 242,
+             "type": "string"
+            }
+           },
+           "required": [
+            "grade",
+            "roast",
+            "one_liner",
+            "metrics",
+            "generatedAt",
+            "fromCache",
+            "disclaimer"
+           ],
+           "type": [
+            "object",
+            "null"
+           ]
+          },
+          "status": {
+           "enum": [
+            "admitted",
+            "preparing",
+            "prepared",
+            "dispatching",
+            "unknown",
+            "paid",
+            "unpaid"
+           ]
+          },
+          "status_url": {
+           "description": "Free GET receipt endpoint. No payment signature, cookie or AX1 account required. The URL and operation_id identify the same receipt.",
+           "format": "uri",
+           "type": "string"
+          },
+          "token_chain": {
+           "description": "Analyzed token network; absent means legacy Base. Payment remains on Base.",
+           "enum": [
+            "base",
+            "solana"
+           ]
+          }
+         },
+         "required": [
+          "operation_id",
+          "status_url",
+          "status",
+          "result",
+          "page_url",
+          "image_url",
+          "payment",
+          "recovery"
+         ],
+         "type": "object"
+        },
+        "type": {
+         "const": "json"
+        }
+       },
+       "required": [
+        "type",
+        "example"
+       ],
+       "type": "object"
+      }
+     },
+     "required": [
+      "input",
+      "output"
+     ],
+     "type": "object"
+    }
+   },
+   "builder-code": {
+    "info": {
+     "a": "bc_tyhmcm97"
+    },
+    "schema": {
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+     "additionalProperties": false,
+     "properties": {
+      "a": {
+       "description": "App builder code",
+       "pattern": "^[a-z0-9_]{1,32}$",
+       "type": "string"
+      },
+      "s": {
+       "description": "Service builder codes",
+       "items": {
+        "pattern": "^[a-z0-9_]{1,32}$",
+        "type": "string"
+       },
+       "maxItems": 11,
+       "type": "array"
+      },
+      "w": {
+       "description": "Wallet builder code",
+       "pattern": "^[a-z0-9_]{1,32}$",
+       "type": "string"
+      }
+     },
+     "type": "object"
+    }
+   }
+  },
+  "lastUpdated": "2026-11-26T05:42:47.151Z",
+  "quality": {
+   "l30DaysTotalCalls": 265559,
+   "l30DaysUniquePayers": 1722,
+   "lastCalledAt": "2026-11-26T00:11:21.096Z"
+  },
+  "resource": "https://ax1-new.vercel.app/api/dashboard/q-verdict/resource",
+  "serviceName": "AX1 Console",
+  "tags": [
+   "agents",
+   "token",
+   "verdict"
+  ],
+  "type": "http",
+  "x402Version": 2
+ },
+ {
+  "accepts": [
+   {
+    "amount": "50000",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "extra": {
+     "name": "USD Coin",
+     "version": "2"
+    },
+    "maxTimeoutSeconds": 3600,
+    "network": "eip155:8453",
+    "payTo": "0x17cd53C04D707eF0Dd615EF56c633f02915a7905",
+    "scheme": "exact"
+   }
+  ],
+  "description": "Pay the send-token execution fee (ERC-20 transfer)",
+  "extensions": {
+   "bazaar": {
+    "info": {
+     "input": {
+      "method": "GET",
+      "queryParams": {},
+      "type": "http"
+     },
+     "output": {
+      "example": {
+       "status": "ok"
+      },
+      "type": "json"
+     }
+    },
+    "schema": {
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+     "properties": {
+      "input": {
+       "additionalProperties": false,
+       "properties": {
+        "method": {
+         "enum": [
+          "GET"
+         ],
+         "type": "string"
+        },
+        "queryParams": {
+         "additionalProperties": false,
+         "properties": {},
+         "required": [],
+         "type": "object"
+        },
+        "type": {
+         "const": "http",
+         "type": "string"
+        }
+       },
+       "required": [
+        "type",
+        "method"
+       ],
+       "type": "object"
+      },
+      "output": {
+       "properties": {
+        "example": {
+         "additionalProperties": false,
+         "properties": {
+          "status": {
+           "description": "ok once the execution fee is settled",
+           "enum": [
+            "ok"
+           ],
+           "type": "string"
+          }
+         },
+         "required": [
+          "status"
+         ],
+         "type": "object"
+        },
+        "type": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "type"
+       ],
+       "type": "object"
+      }
+     },
+     "required": [
+      "input"
+     ],
+     "type": "object"
+    }
+   },
+   "eip2612GasSponsoring": {},
+   "erc20ApprovalGasSponsoring": {}
+  },
+  "lastUpdated": "2026-11-26T05:05:29.898Z",
+  "quality": {
+   "l30DaysTotalCalls": 12879,
+   "l30DaysUniquePayers": 6850,
+   "lastCalledAt": "2026-11-26T00:10:53.371Z"
+  },
+  "resource": "https://keyring-agent.blockchhub.link/api/send-token",
+  "type": "http",
+  "x402Version": 2
+ },
+ {
+  "accepts": [
+   {
+    "amount": "2000",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "extra": {
+     "name": "USD Coin",
+     "version": "2"
+    },
+    "maxTimeoutSeconds": 300,
+    "network": "eip155:8453",
+    "payTo": "0xd6fCE15298Fc9D60f867d9455D497177Da9BFB0a",
+    "scheme": "exact"
+   }
+  ],
+  "description": "Complete weather bundle in one call: current conditions (temperature, feels-like, humidity, wind speed/direction/gusts, pressure, cloud cover, precipitation, UV, day/night) plus 24-hour hourly and 7-day daily forecast, air quality (AQI, PM2.5, PM10, ozone), solar radiation, and severe-weather alerts. Query by city name or lat/lon. Times in the location local timezone. Most complete weather data per call.",
+  "extensions": {
+   "bazaar": {
+    "info": {
+     "input": {
+      "method": "GET",
+      "queryParams": {
+       "city": "Paris"
+      },
+      "type": "http"
+     },
+     "output": {
+      "example": {
+       "air_quality": {
+        "aqi_european": 20,
+        "ozone": 68,
+        "pm2_5": 5.1
+       },
+       "alerts": [
+        {
+         "code": "uv_high",
+         "message": "High UV index around midday",
+         "severity": "moderate"
+        }
+       ],
+       "astronomy": {
+        "moon_illumination_pct": 99.1,
+        "moon_phase": 0.52,
+        "moon_phase_name": "Full moon",
+        "sunrise": "2026-08-09T04:12:00Z",
+        "sunset": "2026-08-09T19:34:00Z"
+       },
+       "cached": false,
+       "current": {
+        "condition": "Clear sky",
+        "condition_code": "0",
+        "feels_like_c": 20.1,
+        "humidity_pct": 55,
+        "is_day": true,
+        "observed_at": "2026-08-09T11:00:00Z",
+        "pressure_hpa": 1015,
+        "temp_c": 21.3,
+        "uv_index": 3,
+        "wind_kmh": 12
+       },
+       "data_age_s": 0,
+       "forecast": {
+        "daily": [
+         {
+          "date": "2026-08-09",
+          "temp_max_c": 25,
+          "temp_min_c": 15
+         }
+        ],
+        "hourly": [
+         {
+          "precip_prob_pct": 5,
+          "temp_c": 22.1,
+          "time": "2026-08-09T12:00:00Z"
+         }
+        ]
+       },
+       "generated_at": "2026-08-09T12:00:00.000Z",
+       "location": {
+        "admin1": "\u00cele-de-France",
+        "alternatives": 9,
+        "country": "France",
+        "country_code": "FR",
+        "lat": 48.85,
+        "lon": 2.35,
+        "name": "Paris"
+       },
+       "payer": {
+        "address": "0x0000000000000000000000000000000000000000",
+        "network": "base"
+       },
+       "request_id": "0b21c0e6-6a3f-4e2a-8b1e-2f9d4c7a1e55",
+       "solar": {
+        "direct_radiation_wm2": 410,
+        "shortwave_radiation_wm2": 512
+       },
+       "source": "open-meteo",
+       "timezone": "Europe/Paris",
+       "utc_offset_seconds": 7200
+      },
+      "type": "json"
+     }
+    },
+    "schema": {
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+     "properties": {
+      "input": {
+       "additionalProperties": false,
+       "properties": {
+        "method": {
+         "enum": [
+          "GET"
+         ],
+         "type": "string"
+        },
+        "queryParams": {
+         "properties": {
+          "city": {
+           "description": "City name (alternative to lat/lon; aliases q, location, name, address)",
+           "type": "string"
+          },
+          "country": {
+           "description": "Optional with city: 2-letter ISO country code",
+           "type": "string"
+          },
+          "language": {
+           "description": "Optional with city: 2-letter lookup language",
+           "type": "string"
+          },
+          "lat": {
+           "description": "Latitude -90..90 (requires lon; alias latitude)",
+           "type": "number"
+          },
+          "lon": {
+           "description": "Longitude -180..180 (requires lat; alias longitude)",
+           "type": "number"
+          },
+          "timezone": {
+           "description": "Optional IANA timezone, UTC or auto",
+           "type": "string"
+          }
+         },
+         "type": "object"
+        },
+        "type": {
+         "const": "http",
+         "type": "string"
+        }
+       },
+       "required": [
+        "type",
+        "method"
+       ],
+       "type": "object"
+      },
+      "output": {
+       "properties": {
+        "example": {
+         "properties": {
+          "air_quality": {
+           "nullable": true,
+           "type": "object"
+          },
+          "alerts": {
+           "type": "array"
+          },
+          "astronomy": {
+           "type": "object"
+          },
+          "cached": {
+           "description": "true when served from the service cache",
+           "type": "boolean"
+          },
+          "current": {
+           "type": "object"
+          },
+          "data_age_s": {
+           "description": "Seconds since the upstream data was fetched",
+           "type": "integer"
+          },
+          "forecast": {
+           "type": "object"
+          },
+          "generated_at": {
+           "type": "string"
+          },
+          "location": {
+           "properties": {
+            "admin1": {
+             "type": "string"
+            },
+            "alternatives": {
+             "description": "Other places found under the same name, up to 9 (a lower bound, not a count)",
+             "type": "integer"
+            },
+            "country": {
+             "type": "string"
+            },
+            "country_code": {
+             "type": "string"
+            },
+            "lat": {
+             "type": "number"
+            },
+            "lon": {
+             "type": "number"
+            },
+            "name": {
+             "type": "string"
+            }
+           },
+           "type": "object"
+          },
+          "payer": {
+           "properties": {
+            "address": {
+             "nullable": true,
+             "type": "string"
+            },
+            "network": {
+             "type": "string"
+            }
+           },
+           "type": "object"
+          },
+          "request_id": {
+           "type": "string"
+          },
+          "solar": {
+           "type": "object"
+          },
+          "source": {
+           "type": "string"
+          },
+          "timezone": {
+           "type": "string"
+          },
+          "utc_offset_seconds": {
+           "type": "number"
+          }
+         },
+         "type": "object"
+        },
+        "type": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "type"
+       ],
+       "type": "object"
+      }
+     },
+     "required": [
+      "input"
+     ],
+     "type": "object"
+    }
+   }
+  },
+  "lastUpdated": "2026-11-26T02:20:21.015Z",
+  "quality": {
+   "l30DaysTotalCalls": 1378,
+   "l30DaysUniquePayers": 383,
+   "lastCalledAt": "2026-11-26T00:00:16.006Z"
+  },
+  "resource": "https://x402.tbs-digital.com/weather/current",
+  "serviceName": "TBS Weather & Climate API",
+  "tags": [
+   "weather",
+   "forecast",
+   "current-conditions",
+   "air-quality",
+   "alerts"
+  ],
+  "type": "http",
+  "x402Version": 2
+ },
+ {
+  "accepts": [
+   {
+    "amount": "5000",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "extra": {
+     "name": "USD Coin",
+     "version": "2"
+    },
+    "maxTimeoutSeconds": 60,
+    "network": "eip155:8453",
+    "payTo": "0x589a2314a2E05F45e40C4823Da3Ba58D421dB3d8",
+    "resource": "https://www.api-xpay.com/x402/quote",
+    "scheme": "exact"
+   }
+  ],
+  "description": "Payment quote with amount, asset, and merchant wallet",
+  "extensions": {
+   "bazaar": {
+    "info": {
+     "input": {
+      "method": "GET",
+      "type": "http"
+     },
+     "output": {
+      "example": {
+       "quote": {
+        "amount": "0.005",
+        "asset": "USDC",
+        "network": "base",
+        "payTo": "0x589a2314a2E05F45e40C4823Da3Ba58D421dB3d8",
+        "protocol": "x402",
+        "requestId": "req_abc123"
+       },
+       "service": "X Pay",
+       "success": true
+      },
+      "type": "json"
+     }
+    },
+    "schema": {
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+     "properties": {
+      "input": {
+       "additionalProperties": false,
+       "properties": {
+        "headers": {
+         "additionalProperties": {
+          "type": "string"
+         },
+         "type": "object"
+        },
+        "method": {
+         "enum": [
+          "GET",
+          "HEAD",
+          "DELETE"
+         ],
+         "type": "string"
+        },
+        "queryParams": {
+         "additionalProperties": {
+          "type": "string"
+         },
+         "type": "object"
+        },
+        "type": {
+         "const": "http",
+         "type": "string"
+        }
+       },
+       "required": [
+        "type",
+        "method"
+       ],
+       "type": "object"
+      },
+      "output": {
+       "properties": {
+        "example": {
+         "type": "object"
+        },
+        "type": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "type"
+       ],
+       "type": "object"
+      }
+     },
+     "required": [
+      "input"
+     ],
+     "type": "object"
+    }
+   }
+  },
+  "iconUrl": "https://res.cloudinary.com/bdb-prod/image/upload/c_fill,ar_1:1,w_256,h_256,f_auto,q_auto/v1789136282/bazaar-icons/101f79e83d7e2744.png",
+  "lastUpdated": "2026-11-26T05:17:48.267Z",
+  "quality": {
+   "l30DaysTotalCalls": 84128,
+   "l30DaysUniquePayers": 89,
+   "lastCalledAt": "2026-11-26T00:04:16.914Z"
+  },
+  "resource": "https://www.api-xpay.com/x402/quote",
+  "serviceName": "X Pay",
+  "tags": [
+   "payment",
+   "quote",
+   "pricing",
+   "merchant",
+   "invoice"
+  ],
+  "type": "http",
+  "x402Version": 2
+ },
+ {
+  "accepts": [
+   {
+    "amount": "10000",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "extra": {
+     "name": "USD Coin",
+     "version": "2"
+    },
+    "maxTimeoutSeconds": 300,
+    "network": "eip155:8453",
+    "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397",
+    "scheme": "exact"
+   },
+   {
+    "amount": "10000",
+    "asset": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    "extra": {
+     "feePayer": "BENrLoUbndxoNMUS5JXApGMtNykLjFXXixMtpDwDR9SP"
+    },
+    "maxTimeoutSeconds": 300,
+    "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+    "payTo": "4syngecZXG1XeiVffWC1vLxpwxHyZnZj8gtBZyJt5DRX",
+    "scheme": "exact"
+   },
+   {
+    "amount": "10000",
+    "asset": "31566704",
+    "extra": {
+     "feePayer": "ZMFK2OI7ZBD2U27ISERZC4S6LKM6WMFJPZQ4MYNJDZ2VNBNMBA67RA22AA"
+    },
+    "maxTimeoutSeconds": 300,
+    "network": "algorand:wGHE2Pwdvd7S12BL5FaOP20EGYesN73k",
+    "payTo": "N6PN2Z6Q2JZV6SKWRN7WO334NPUBEPDPBABOZTRRVN5GAPKQGDZQ6VWW6Q",
+    "scheme": "exact"
+   }
+  ],
+  "description": "API recommendation and x402 discovery for your task. Required query: need. Which API should I call? Recommends which x402 API to use for any task, with evidence. Describe a task in plain words. Compare up to five paid APIs, URLs, prices, payment networks and invocation details. Includes paid delivery evidence and risk flags. Provider calls are paid separately. No picks / non-2xx is never charged. Required: need=. Discovery quote only; signed requests without need are rejected.",
+  "extensions": {
+   "bazaar": {
+    "category": "search",
+    "info": {
+     "input": {
+      "method": "GET",
+      "queryParams": {
+       "need": "weather forecast",
+       "view": "compact"
+      },
+      "type": "http"
+     },
+     "output": {
+      "example": {
+       "picks": [
+        {
+         "delivery_verification": {
+          "delivery_result": "delivered",
+          "status": "verified"
+         },
+         "description": "Current weather for any city. Pass ?city=London",
+         "risk_flags": [
+          "SELLER_DESCRIPTION_UNVERIFIED",
+          "REQUIRED_INPUT_UNKNOWN"
+         ],
+         "selected_offer": {
+          "network": "eip155:8453",
+          "price_usd": 0.001
+         },
+         "url": "https://api.ideafactorylab.org/x402/weather"
+        }
+       ]
+      },
+      "type": "json"
+     }
+    },
+    "schema": {
+     "$schema": "http://json-schema.org/draft-07/schema#",
+     "properties": {
+      "input": {
+       "properties": {
+        "method": {
+         "const": "GET"
+        },
+        "queryParams": {
+         "additionalProperties": false,
+         "properties": {
+          "chain": {
+           "description": "Provider payment network in CAIP-2 form, such as eip155:8453. This does not identify the blockchain analyzed by the service.",
+           "pattern": "^[a-z0-9-]{2,16}:[A-Za-z0-9_=-]{1,64}$",
+           "type": "string"
+          },
+          "limit": {
+           "default": 3,
+           "description": "Maximum number of picks. Fewer results are returned when evidence is insufficient.",
+           "maximum": 5,
+           "minimum": 1,
+           "type": "integer"
+          },
+          "live": {
+           "default": 1,
+           "description": "Only live=1 is supported. Returned picks do not always have a current payment challenge. Free demo needs (weather, crypto prices, web search) can skip this check, as can paid answers. Unconstrained picks may use a positive stored liveness probe within 72 hours or remain unknown after a bounded fallback. Explicit chain or price filters use catalog evidence and attempt a bounded current challenge. Uncertain reachability remains unknown, with no verified offer. A pick without a validated challenge has payment_preflight.status=not_checked, has_valid_recent_challenge=false and selected_offer=null. Read liveness_source, liveness_checked_at and payment_preflight.checked_at; none verifies paid delivery.",
+           "enum": [
+            1
+           ],
+           "type": "integer"
+          },
+          "max_price_usd": {
+           "description": "Maximum nominal USD price of the selected provider offer. Separate from the 0.01 USDC recommendation fee. The provider challenge at call time is authoritative.",
+           "minimum": 0,
+           "type": "number"
+          },
+          "need": {
+           "description": "A phrase describing the required work, with at least two letters or digits. The limit counts Unicode characters in the original input, including whitespace. Accepted text is normalized without truncation and matched against indexed endpoint descriptions.",
+           "maxLength": 300,
+           "minLength": 2,
+           "type": "string"
+          },
+          "view": {
+           "default": "legacy",
+           "description": "Legacy preserves successful-response fields and types. The other views use recommend.v2. Compact includes routing facts, evidence adds measurements, and debug adds bounded retrieval diagnostics.",
+           "enum": [
+            "legacy",
+            "compact",
+            "evidence",
+            "debug"
+           ],
+           "type": "string"
+          }
+         },
+         "required": [
+          "need"
+         ],
+         "type": "object"
+        },
+        "type": {
+         "const": "http"
+        }
+       },
+       "required": [
+        "type",
+        "method",
+        "queryParams"
+       ],
+       "type": "object"
+      },
+      "output": {
+       "description": "Illustrative customer-facing excerpt of a compact answer. Full response, errors and payment headers: https://agents-trust.com/openapi.json#/paths/~1recommend/get/responses",
+       "properties": {
+        "example": {
+         "properties": {
+          "picks": {
+           "items": {
+            "properties": {
+             "delivery_verification": {
+              "properties": {
+               "delivery_result": {
+                "type": [
+                 "string",
+                 "null"
+                ]
+               },
+               "status": {
+                "enum": [
+                 "not_tested",
+                 "verified",
+                 "quality_issue",
+                 "failed_delivery",
+                 null
+                ],
+                "type": [
+                 "string",
+                 "null"
+                ]
+               }
+              },
+              "required": [
+               "status"
+              ],
+              "type": "object"
+             },
+             "description": {
+              "type": [
+               "string",
+               "null"
+              ]
+             },
+             "risk_flags": {
+              "items": {
+               "type": "string"
+              },
+              "type": "array"
+             },
+             "selected_offer": {
+              "anyOf": [
+               {
+                "type": "null"
+               },
+               {
+                "properties": {
+                 "network": {
+                  "type": "string"
+                 },
+                 "price_usd": {
+                  "type": [
+                   "number",
+                   "null"
+                  ]
+                 }
+                },
+                "required": [
+                 "price_usd",
+                 "network"
+                ],
+                "type": "object"
+               }
+              ]
+             },
+             "url": {
+              "type": "string"
+             }
+            },
+            "required": [
+             "url",
+             "description",
+             "selected_offer",
+             "risk_flags",
+             "delivery_verification"
+            ],
+            "type": "object"
+           },
+           "type": "array"
+          }
+         },
+         "required": [
+          "picks"
+         ],
+         "type": "object"
+        },
+        "type": {
+         "const": "json"
+        }
+       },
+       "type": "object"
+      }
+     },
+     "required": [
+      "input"
+     ],
+     "type": "object"
+    }
+   }
+  },
+  "lastUpdated": "2026-11-26T00:20:40.885Z",
+  "quality": {
+   "l30DaysTotalCalls": 30402,
+   "l30DaysUniquePayers": 55,
+   "lastCalledAt": "2026-11-26T00:11:34.574Z"
+  },
+  "resource": "https://api.agents-trust.com/recommend",
+  "serviceName": "Agents Trust",
+  "tags": [
+   "recommendation",
+   "trust score x402",
+   "find paid api",
+   "compare paid APIs",
+   "recommend x402 service"
+  ],
+  "type": "http",
+  "x402Version": 2
+ },
+ {
+  "accepts": [
+   {
+    "amount": "10000",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "extra": {
+     "name": "USD Coin",
+     "version": "2"
+    },
+    "maxTimeoutSeconds": 300,
+    "network": "eip155:8453",
+    "payTo": "0x96368628b679a459FE69815bacCa5CB0232AC397",
+    "scheme": "exact"
+   },
+   {
+    "amount": "10000",
+    "asset": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    "extra": {
+     "feePayer": "BENrLoUbndxoNMUS5JXApGMtNykLjFXXixMtpDwDR9SP"
+    },
+    "maxTimeoutSeconds": 300,
+    "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+    "payTo": "4syngecZXG1XeiVffWC1vLxpwxHyZnZj8gtBZyJt5DRX",
+    "scheme": "exact"
+   },
+   {
+    "amount": "10000",
+    "asset": "31566704",
+    "extra": {
+     "feePayer": "ZMFK2OI7ZBD2U27ISERZC4S6LKM6WMFJPZQ4MYNJDZ2VNBNMBA67RA22AA"
+    },
+    "maxTimeoutSeconds": 300,
+    "network": "algorand:wGHE2Pwdvd7S12BL5FaOP20EGYesN73k",
+    "payTo": "N6PN2Z6Q2JZV6SKWRN7WO334NPUBEPDPBABOZTRRVN5GAPKQGDZQ6VWW6Q",
+    "scheme": "exact"
+   }
+  ],
+  "description": "API recommendation and x402 discovery for your task. Required query: need. Which API should I call? Recommends which x402 API to use for any task, with evidence. Describe a task in plain words. Compare up to five paid APIs, URLs, prices, payment networks and invocation details. Includes paid delivery evidence and risk flags. Provider calls are paid separately. No picks / non-2xx is never charged. Required: need=. Discovery quote only; signed requests without need are rejected.",
+  "extensions": {
+   "bazaar": {
+    "category": "search",
+    "info": {
+     "input": {
+      "method": "GET",
+      "queryParams": {
+       "need": "weather forecast",
+       "view": "compact"
+      },
+      "type": "http"
+     },
+     "output": {
+      "example": {
+       "picks": [
+        {
+         "delivery_verification": {
+          "delivery_result": "delivered",
+          "status": "verified"
+         },
+         "description": "Current weather for any city. Pass ?city=London",
+         "risk_flags": [
+          "SELLER_DESCRIPTION_UNVERIFIED",
+          "REQUIRED_INPUT_UNKNOWN"
+         ],
+         "selected_offer": {
+          "network": "eip155:8453",
+          "price_usd": 0.001
+         },
+         "url": "https://api.ideafactorylab.org/x402/weather"
+        }
+       ]
+      },
+      "type": "json"
+     }
+    },
+    "schema": {
+     "$schema": "http://json-schema.org/draft-07/schema#",
+     "properties": {
+      "input": {
+       "properties": {
+        "method": {
+         "const": "GET"
+        },
+        "queryParams": {
+         "additionalProperties": false,
+         "properties": {
+          "chain": {
+           "description": "Provider payment network in CAIP-2 form, such as eip155:8453. This does not identify the blockchain analyzed by the service.",
+           "pattern": "^[a-z0-9-]{2,16}:[A-Za-z0-9_=-]{1,64}$",
+           "type": "string"
+          },
+          "limit": {
+           "default": 3,
+           "description": "Maximum number of picks. Fewer results are returned when evidence is insufficient.",
+           "maximum": 5,
+           "minimum": 1,
+           "type": "integer"
+          },
+          "live": {
+           "default": 1,
+           "description": "Only live=1 is supported. Returned picks do not always have a current payment challenge. Free demo needs (weather, crypto prices, web search) can skip this check, as can paid answers. Unconstrained picks may use a positive stored liveness probe within 72 hours or remain unknown after a bounded fallback. Explicit chain or price filters use catalog evidence and attempt a bounded current challenge. Uncertain reachability remains unknown, with no verified offer. A pick without a validated challenge has payment_preflight.status=not_checked, has_valid_recent_challenge=false and selected_offer=null. Read liveness_source, liveness_checked_at and payment_preflight.checked_at; none verifies paid delivery.",
+           "enum": [
+            1
+           ],
+           "type": "integer"
+          },
+          "max_price_usd": {
+           "description": "Maximum nominal USD price of the selected provider offer. Separate from the 0.01 USDC recommendation fee. The provider challenge at call time is authoritative.",
+           "minimum": 0,
+           "type": "number"
+          },
+          "need": {
+           "description": "A phrase describing the required work, with at least two letters or digits. The limit counts Unicode characters in the original input, including whitespace. Accepted text is normalized without truncation and matched against indexed endpoint descriptions.",
+           "maxLength": 300,
+           "minLength": 2,
+           "type": "string"
+          },
+          "view": {
+           "default": "legacy",
+           "description": "Legacy preserves successful-response fields and types. The other views use recommend.v2. Compact includes routing facts, evidence adds measurements, and debug adds bounded retrieval diagnostics.",
+           "enum": [
+            "legacy",
+            "compact",
+            "evidence",
+            "debug"
+           ],
+           "type": "string"
+          }
+         },
+         "required": [
+          "need"
+         ],
+         "type": "object"
+        },
+        "type": {
+         "const": "http"
+        }
+       },
+       "required": [
+        "type",
+        "method",
+        "queryParams"
+       ],
+       "type": "object"
+      },
+      "output": {
+       "description": "Illustrative customer-facing excerpt of a compact answer. Full response, errors and payment headers: https://agents-trust.com/openapi.json#/paths/~1recommend/get/responses",
+       "properties": {
+        "example": {
+         "properties": {
+          "picks": {
+           "items": {
+            "properties": {
+             "delivery_verification": {
+              "properties": {
+               "delivery_result": {
+                "type": [
+                 "string",
+                 "null"
+                ]
+               },
+               "status": {
+                "enum": [
+                 "not_tested",
+                 "verified",
+                 "quality_issue",
+                 "failed_delivery",
+                 null
+                ],
+                "type": [
+                 "string",
+                 "null"
+                ]
+               }
+              },
+              "required": [
+               "status"
+              ],
+              "type": "object"
+             },
+             "description": {
+              "type": [
+               "string",
+               "null"
+              ]
+             },
+             "risk_flags": {
+              "items": {
+               "type": "string"
+              },
+              "type": "array"
+             },
+             "selected_offer": {
+              "anyOf": [
+               {
+                "type": "null"
+               },
+               {
+                "properties": {
+                 "network": {
+                  "type": "string"
+                 },
+                 "price_usd": {
+                  "type": [
+                   "number",
+                   "null"
+                  ]
+                 }
+                },
+                "required": [
+                 "price_usd",
+                 "network"
+                ],
+                "type": "object"
+               }
+              ]
+             },
+             "url": {
+              "type": "string"
+             }
+            },
+            "required": [
+             "url",
+             "description",
+             "selected_offer",
+             "risk_flags",
+             "delivery_verification"
+            ],
+            "type": "object"
+           },
+           "type": "array"
+          }
+         },
+         "required": [
+          "picks"
+         ],
+         "type": "object"
+        },
+        "type": {
+         "const": "json"
+        }
+       },
+       "type": "object"
+      }
+     },
+     "required": [
+      "input"
+     ],
+     "type": "object"
+    }
+   }
+  },
+  "lastUpdated": "2026-11-26T00:20:40.885Z",
+  "quality": {
+   "l30DaysTotalCalls": 30402,
+   "l30DaysUniquePayers": 55,
+   "lastCalledAt": "2026-11-26T00:11:34.574Z"
+  },
+  "resource": "https://api.agents-trust.com/recommend",
+  "serviceName": "Agents Trust",
+  "tags": [
+   "recommendation",
+   "trust score x402",
+   "find paid api",
+   "compare paid APIs",
+   "recommend x402 service"
+  ],
+  "type": "http",
+  "x402Version": 2
+ },
+ {
+  "accepts": [
+   {
+    "amount": "7000",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "extra": {
+     "acceptId": "legacy",
+     "breakdown": {
+      "search": 0.006999999999999999
+     },
+     "name": "USD Coin",
+     "totalUsd": 0.006999999999999999,
+     "version": "2"
+    },
+    "maxTimeoutSeconds": 60,
+    "network": "eip155:8453",
+    "payTo": "0x6d6E695b09861467c7d462f5AAF31cF3540B9192",
+    "scheme": "exact"
+   },
+   {
+    "amount": "7000",
+    "asset": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+    "extra": {
+     "acceptId": "solana-usdc-mainnet",
+     "breakdown": {
+      "search": 0.006999999999999999
+     },
+     "feePayer": "BENrLoUbndxoNMUS5JXApGMtNykLjFXXixMtpDwDR9SP",
+     "name": "USD Coin",
+     "totalUsd": 0.006999999999999999,
+     "transactionVersions": [
+      0,
+      1
+     ],
+     "version": "2"
+    },
+    "maxTimeoutSeconds": 60,
+    "network": "solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp",
+    "payTo": "12Ec2cJmfR1C9uwejzxcuMhUgEC7wDrLgm1wBvvR5w9E",
+    "scheme": "exact"
+   },
+   {
+    "amount": "7000",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "extra": {
+     "acceptId": "base-usdc-gateway",
+     "assets": [
+      {
+       "address": "0x833589fcd6edb6e08f4c7c32d4f71b54bda02913",
+       "authorizationVersions": [
+        "1",
+        "2"
+       ],
+       "decimals": 6,
+       "symbol": "USDC"
+      },
+      {
+       "address": "0x60a3e35cc302bfa44cb288bc5a4f316fdb1adb42",
+       "authorizationVersions": [
+        "2"
+       ],
+       "decimals": 6,
+       "symbol": "EURC"
+      }
+     ],
+     "breakdown": {
+      "search": 0.006999999999999999
+     },
+     "minValiditySeconds": 604800,
+     "name": "GatewayWalletBatched",
+     "totalUsd": 0.006999999999999999,
+     "verifyingContract": "0x77777777dcc4d5a8b6e418fd04d8997ef11000ee",
+     "version": "1"
+    },
+    "maxTimeoutSeconds": 604900,
+    "network": "eip155:8453",
+    "payTo": "0xB98eF29eb2be19Ae646A8FC0248255B90A332dbC",
+    "scheme": "exact"
+   },
+   {
+    "amount": "7000",
+    "asset": "0x79A02482A880bCE3F13e09Da970dC34db4CD24d1",
+    "extra": {
+     "acceptId": "worldchain-usdc-gateway",
+     "assets": [
+      {
+       "address": "0x79a02482a880bce3f13e09da970dc34db4cd24d1",
+       "authorizationVersions": [
+        "1",
+        "2"
+       ],
+       "decimals": 6,
+       "symbol": "USDC"
+      },
+      {
+       "address": "0x1c60ba0a0ed1019e8eb035e6daf4155a5ce2380b",
+       "authorizationVersions": [
+        "2"
+       ],
+       "decimals": 6,
+       "symbol": "EURC"
+      }
+     ],
+     "breakdown": {
+      "search": 0.006999999999999999
+     },
+     "minValiditySeconds": 604800,
+     "name": "GatewayWalletBatched",
+     "totalUsd": 0.006999999999999999,
+     "verifyingContract": "0x77777777dcc4d5a8b6e418fd04d8997ef11000ee",
+     "version": "1"
+    },
+    "maxTimeoutSeconds": 604900,
+    "network": "eip155:480",
+    "payTo": "0xB98eF29eb2be19Ae646A8FC0248255B90A332dbC",
+    "scheme": "exact"
+   },
+   {
+    "amount": "7000",
+    "asset": "0x3600000000000000000000000000000000000000",
+    "extra": {
+     "acceptId": "arc-usdc-gateway",
+     "assets": [
+      {
+       "address": "0x3600000000000000000000000000000000000000",
+       "authorizationVersions": [
+        "1",
+        "2"
+       ],
+       "decimals": 6,
+       "symbol": "USDC"
+      },
+      {
+       "address": "0x171a4217b86a807a64eb94757db6849fb4bdbaa0",
+       "authorizationVersions": [
+        "2"
+       ],
+       "decimals": 8,
+       "symbol": "cirBTC"
+      },
+      {
+       "address": "0xbef5f6d51cb62b58e6a8f77868681825c6fe21c1",
+       "authorizationVersions": [
+        "2"
+       ],
+       "decimals": 6,
+       "symbol": "EURC"
+      }
+     ],
+     "breakdown": {
+      "search": 0.006999999999999999
+     },
+     "minValiditySeconds": 604800,
+     "name": "GatewayWalletBatched",
+     "totalUsd": 0.006999999999999999,
+     "verifyingContract": "0x77777777dcc4d5a8b6e418fd04d8997ef11000ee",
+     "version": "1"
+    },
+    "maxTimeoutSeconds": 604900,
+    "network": "eip155:5042",
+    "payTo": "0xB98eF29eb2be19Ae646A8FC0248255B90A332dbC",
+    "scheme": "exact"
+   },
+   {
+    "amount": "7000",
+    "asset": "0x3600000000000000000000000000000000000000",
+    "extra": {
+     "acceptId": "arc-usdc-circle",
+     "assetTransferMethod": "eip3009",
+     "breakdown": {
+      "search": 0.006999999999999999
+     },
+     "name": "USDC",
+     "totalUsd": 0.006999999999999999,
+     "version": "2"
+    },
+    "maxTimeoutSeconds": 3600,
+    "network": "eip155:5042",
+    "payTo": "0xB98eF29eb2be19Ae646A8FC0248255B90A332dbC",
+    "scheme": "exact"
+   },
+   {
+    "amount": "7000",
+    "asset": "0x833589fCD6eDb6E08f4c7C32D4f71b54bdA02913",
+    "extra": {
+     "acceptId": "base-usdc-circle",
+     "assetTransferMethod": "eip3009",
+     "breakdown": {
+      "search": 0.006999999999999999
+     },
+     "name": "USD Coin",
+     "totalUsd": 0.006999999999999999,
+     "version": "2"
+    },
+    "maxTimeoutSeconds": 3600,
+    "network": "eip155:8453",
+    "payTo": "0xB98eF29eb2be19Ae646A8FC0248255B90A332dbC",
+    "scheme": "exact"
+   }
+  ],
+  "bundleSlugs": [
+   "daily-news-search",
+   "news-audio-briefing",
+   "people-sourcing-enrichment"
+  ],
+  "curated": true,
+  "description": "Exa /search endpoint",
+  "extensions": {
+   "agentkit": {
+    "_options": {
+     "mode": {
+      "type": "free-trial",
+      "uses": 100
+     },
+     "network": "eip155:480",
+     "statement": "Verify your agent is backed by a real human to access Exa"
+    },
+    "info": {
+     "domain": "api.exa.ai",
+     "issuedAt": "2026-11-25T21:08:22.706Z",
+     "nonce": "dde61db6af3e8179d1eab691cc9c8792",
+     "resources": [
+      "https://api.exa.ai/search"
+     ],
+     "statement": "Verify your agent is backed by a real human to access Exa",
+     "uri": "https://api.exa.ai/search",
+     "version": "1"
+    },
+    "schema": {
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+     "properties": {
+      "address": {
+       "type": "string"
+      },
+      "chainId": {
+       "type": "string"
+      },
+      "domain": {
+       "type": "string"
+      },
+      "expirationTime": {
+       "format": "date-time",
+       "type": "string"
+      },
+      "issuedAt": {
+       "format": "date-time",
+       "type": "string"
+      },
+      "nonce": {
+       "type": "string"
+      },
+      "notBefore": {
+       "format": "date-time",
+       "type": "string"
+      },
+      "requestId": {
+       "type": "string"
+      },
+      "resources": {
+       "items": {
+        "format": "uri",
+        "type": "string"
+       },
+       "type": "array"
+      },
+      "signature": {
+       "type": "string"
+      },
+      "statement": {
+       "type": "string"
+      },
+      "type": {
+       "type": "string"
+      },
+      "uri": {
+       "format": "uri",
+       "type": "string"
+      },
+      "version": {
+       "type": "string"
+      }
+     },
+     "required": [
+      "domain",
+      "address",
+      "uri",
+      "version",
+      "chainId",
+      "type",
+      "nonce",
+      "issuedAt",
+      "signature"
+     ],
+     "type": "object"
+    },
+    "supportedChains": [
+     {
+      "chainId": "eip155:480",
+      "type": "eip191"
+     },
+     {
+      "chainId": "eip155:480",
+      "type": "eip1271"
+     }
+    ]
+   },
+   "bazaar": {
+    "info": {
+     "input": {
+      "body": {
+       "numResults": 10,
+       "query": "example search query",
+       "type": "auto"
+      },
+      "bodyType": "json",
+      "method": "POST",
+      "type": "http"
+     },
+     "output": {
+      "example": {
+       "results": [
+        {
+         "score": 0.99,
+         "title": "Example",
+         "url": "https://example.com"
+        }
+       ]
+      },
+      "type": "json"
+     }
+    },
+    "schema": {
+     "$schema": "https://json-schema.org/draft/2020-12/schema",
+     "properties": {
+      "input": {
+       "additionalProperties": false,
+       "properties": {
+        "body": {
+         "properties": {
+          "contents": {
+           "description": "Content fields to include: text, highlights, summary",
+           "type": "object"
+          },
+          "numResults": {
+           "description": "Number of results to return (max 10 for x402)",
+           "type": "number"
+          },
+          "query": {
+           "description": "Search query",
+           "type": "string"
+          },
+          "type": {
+           "description": "Search type: auto, keyword, neural, deep-lite, deep, deep-reasoning",
+           "type": "string"
+          }
+         },
+         "required": [
+          "query"
+         ],
+         "type": "object"
+        },
+        "bodyType": {
+         "enum": [
+          "json",
+          "form-data",
+          "text"
+         ],
+         "type": "string"
+        },
+        "method": {
+         "enum": [
+          "POST"
+         ],
+         "type": "string"
+        },
+        "type": {
+         "const": "http",
+         "type": "string"
+        }
+       },
+       "required": [
+        "type",
+        "bodyType",
+        "body",
+        "method"
+       ],
+       "type": "object"
+      },
+      "output": {
+       "properties": {
+        "example": {
+         "type": "object"
+        },
+        "type": {
+         "type": "string"
+        }
+       },
+       "required": [
+        "type"
+       ],
+       "type": "object"
+      }
+     },
+     "required": [
+      "input"
+     ],
+     "type": "object"
+    }
+   }
+  },
+  "iconUrl": "https://res.cloudinary.com/bdb-prod/image/upload/c_fill,ar_1:1,w_256,h_256,f_auto,q_auto/v1780076809/bazaar-icons/41b0408e3ae73b69.png",
+  "lastUpdated": "2026-11-25T21:08:22.758Z",
+  "quality": {
+   "l30DaysTotalCalls": 12701,
+   "l30DaysUniquePayers": 154,
+   "lastCalledAt": "2026-11-25T21:08:40.199Z"
+  },
+  "resource": "https://api.exa.ai/search",
+  "serviceName": "Exa",
+  "tags": [
+   "search",
+   "ai",
+   "web",
+   "research"
+  ],
+  "type": "http",
+  "x402Version": 2
+ }
+]
