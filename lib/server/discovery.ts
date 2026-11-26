@@ -38,9 +38,10 @@ async function refreshPools() {
 async function refreshServices() {
   const pages = await Promise.all(
     Array.from({ length: BAZAAR_PAGES }, (_, i) =>
+      // A failed page fails the whole refresh, so the last complete catalogue is kept (marked stale)
+      // instead of being replaced by a partial one with a fresh timestamp.
       getJson(`${BAZAAR_URL}?limit=${BAZAAR_PAGE_SIZE}&offset=${i * BAZAAR_PAGE_SIZE}`, 15_000)
-        .then((b) => ((b as { items?: BazaarItem[] }).items ?? []))
-        .catch(() => [] as BazaarItem[]),
+        .then((b) => ((b as { items?: BazaarItem[] }).items ?? [])),
     ),
   );
   const items = pages.flat();

@@ -18,6 +18,10 @@ async function handler(req: NextRequest) {
   // A failed read returns 503, which cancels the payment: the agent is not charged.
   if (!venues.ok) return NextResponse.json({ error: `Live rates unavailable: ${venues.error}` }, { status: 503 });
   const { rows, notRanked } = rankLive(venues.data, q);
+  // Every match dropped for age means the source is down, not that nothing matches: don't charge for it.
+  if (rows.length === 0 && notRanked.some((n) => n.reason === 'stale')) {
+    return NextResponse.json({ error: 'Live rates are older than two hours; try again shortly.' }, { status: 503 });
+  }
   return NextResponse.json({
     source: 'DefiLlama yields API',
     readAt: new Date(venues.readAt).toISOString(),

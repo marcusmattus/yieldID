@@ -44,6 +44,8 @@ export function RampOnramp({ solanaAddress }: { solanaAddress: string }) {
   const [opening, setOpening] = useState(false);
   const [tracked, setTracked] = useState<Tracked | null>(null);
   const timer = useRef<ReturnType<typeof setInterval> | null>(null);
+  // The purchase currently on screen. Responses for any other purchase are ignored.
+  const currentId = useRef<string | null>(null);
 
   const receiver = chain === 'solana' ? solanaAddress : evm;
   const blocked = SETUP.blocked ?? (receiver ? null : 'Add an EVM address in the YieldID maker to receive USDC on Base.');
@@ -53,15 +55,17 @@ export function RampOnramp({ solanaAddress }: { solanaAddress: string }) {
 
   useEffect(() => () => { if (timer.current) clearInterval(timer.current); }, []);
 
-  async function poll(t: Pick<Tracked, 'id' | 'token' | 'apiUrl'>) {
+  async function poll(t: Pick<Tracked, 'id' | 'token' | 'apiUrl'>, interval: ReturnType<typeof setInterval>) {
     try {
       const r = await fetch(`${t.apiUrl}/host-api/purchase/${encodeURIComponent(t.id)}?secret=${encodeURIComponent(t.token)}`);
       if (!r.ok) throw new Error(`Ramp returned ${r.status}`);
       const p = (await r.json()) as RampPurchase;
-      setTracked((cur) => cur && { ...cur, status: p.status, amount: amountOf(p), tx: p.finalTxHash ?? null, error: null });
-      if (RAMP_FINAL.has(p.status) && timer.current) clearInterval(timer.current);
+      if (currentId.current !== t.id) return;
+      setTracked((cur) => (cur && cur.id === t.id ? { ...cur, status: p.status, amount: amountOf(p), tx: p.finalTxHash ?? null, error: null } : cur));
+      if (RAMP_FINAL.has(p.status)) clearInterval(interval);
     } catch (e) {
-      setTracked((cur) => cur && { ...cur, error: `Could not read the status from Ramp: ${(e as Error).message}. Retrying.` });
+      if (currentId.current !== t.id) return;
+      setTracked((cur) => (cur && cur.id === t.id ? { ...cur, error: `Could not read the status from Ramp: ${(e as Error).message}. Retrying.` } : cur));
     }
   }
 
@@ -86,9 +90,11 @@ export function RampOnramp({ solanaAddress }: { solanaAddress: string }) {
             id: purchase.id, token: purchaseViewToken, apiUrl, status: purchase.status, amount: amountOf(purchase),
             symbol: purchase.asset.symbol, receiver: purchase.receiverAddress, tx: purchase.finalTxHash ?? null, error: null,
           };
+          currentId.current = t.id;
           setTracked(t);
           if (timer.current) clearInterval(timer.current);
-          timer.current = setInterval(() => poll(t), 10_000);
+          const interval: ReturnType<typeof setInterval> = setInterval(() => poll(t, interval), 10_000);
+          timer.current = interval;
         })
         .on(RampInstantEventTypes.WIDGET_CONFIG_FAILED, () => setError('Ramp rejected the widget configuration. Check the host API key and environment.'))
         .show();

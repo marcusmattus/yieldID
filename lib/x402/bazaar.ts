@@ -18,7 +18,9 @@ const STABLE_LIST: Array<[network: string, asset: string, symbol: string]> = [
   ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp', 'EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v', 'USDC'],
   ['solana:5eykt4UsFv8P8NJdTREpY1vzqKqZKvdp', 'Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB', 'USDT'],
 ];
-const USD_STABLES = new Map(STABLE_LIST.map(([n, a, s]) => [`${n}|${a.toLowerCase()}`, s]));
+// EVM addresses are case-insensitive; Solana mints are case-sensitive base58 and compare exactly.
+const assetKey = (network: string, asset: string) => `${network}|${network.startsWith('eip155:') ? asset.toLowerCase() : asset}`;
+const USD_STABLES = new Map(STABLE_LIST.map(([n, a, s]) => [assetKey(n, a), s]));
 
 export interface BazaarItem {
   resource: string;
@@ -55,7 +57,7 @@ export function toPaidService(item: BazaarItem): PaidService | null {
   if (url.protocol !== 'https:') return null;
   const priced = item.accepts
     .map((a) => {
-      const stable = USD_STABLES.get(`${a.network}|${a.asset.toLowerCase()}`);
+      const stable = USD_STABLES.get(assetKey(a.network, a.asset));
       const raw = a.amount ?? a.maxAmountRequired;
       if (!stable || !raw || !/^\d+$/.test(raw)) return null;
       return { stable, network: a.network, usd: Number(raw) / 1e6, payTo: a.payTo };

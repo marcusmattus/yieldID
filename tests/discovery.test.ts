@@ -79,3 +79,18 @@ describe('x402 Bazaar → paid services', () => {
     expect(sol.every((r) => r.networks.includes('Solana'))).toBe(true);
   });
 });
+
+describe('review fixes', () => {
+  it('treats an explicitly empty chain selection as no results', () => {
+    const venues = liveVenuesFrom(all, NOW);
+    expect(rankLive(venues, { horizonDays: 30, chains: [], now: NOW }).rows).toHaveLength(0);
+    expect(rankLive(venues, { horizonDays: 30, now: NOW }).rows.length).toBeGreaterThan(0);
+  });
+
+  it('compares Solana mints exactly, so a case-changed key is not taken for USDC', () => {
+    const sol = (bazaar as BazaarItem[]).find((i) => i.accepts.some((a) => a.network.startsWith('solana:')))!;
+    const a = sol.accepts.find((x) => x.network.startsWith('solana:'))!;
+    expect(toPaidService({ ...sol, accepts: [a] })?.stable).toBeTruthy();
+    expect(toPaidService({ ...sol, accepts: [{ ...a, asset: a.asset.toLowerCase() }] })).toBeNull();
+  });
+});

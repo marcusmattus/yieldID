@@ -15,6 +15,7 @@ const RAIL: Array<{ href: string; label: string; icon: keyof typeof Icon; match?
   { href: '/yid', label: 'YieldID maker', icon: 'id' },
   { href: '/add-crypto', label: 'Add crypto', icon: 'wallet' },
   { href: '/board', label: 'Signal board', icon: 'signal', match: ['/proposal'] },
+  { href: '/discover', label: 'Discover', icon: 'globe' },
   { href: '/rules', label: 'Rules', icon: 'rules' },
   { href: '/stables', label: 'Stables', icon: 'stables' },
   { href: '/adapters', label: 'Adapters', icon: 'adapters' },

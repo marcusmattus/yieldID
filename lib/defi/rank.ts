@@ -42,7 +42,8 @@ export function parseHorizon(v: string | null | undefined): number {
 export function rankLive(venues: LiveVenue[], q: LiveQuery) {
   const now = q.now ?? Date.now();
   const filtered = venues.filter(
-    (v) => (!q.chains?.length || q.chains.includes(v.chain)) && (!q.assets?.length || q.assets.includes(v.asset)),
+    // An omitted filter means "any"; an empty list means "none selected" and matches nothing.
+    (v) => (q.chains === undefined || q.chains.includes(v.chain)) && (q.assets === undefined || q.assets.includes(v.asset)),
   );
   const byId = new Map(filtered.map((v) => [v.id, v]));
   const res = rankVenues({

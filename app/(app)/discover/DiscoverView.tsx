@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useMemo, useState } from 'react';
 import { DataStatus, Disclaimer, PageHead, SleeveBadge } from '@/components/ui';
 import type { LiveVenue } from '@/lib/defi/pools';
 import { FLAG_LABEL, MOVE_COST_MODEL, venueFlags } from '@/lib/defi/pools';
@@ -36,7 +37,15 @@ export function DiscoverView({ venues, services, paid }: Props) {
   const [chains, setChains] = useState<Chain[]>(['Solana', 'Base']);
   const [asset, setAsset] = useState('USDC');
   const [showAll, setShowAll] = useState(false);
-  const [now] = useState(() => Date.now());
+  const [now, setNow] = useState(() => Date.now());
+  const router = useRouter();
+  // Keep the freshness cutoff honest on an open page: tick the clock each minute
+  // and re-read the server data every five, matching the server's refresh.
+  useEffect(() => {
+    const tick = setInterval(() => setNow(Date.now()), 60_000);
+    const reload = setInterval(() => router.refresh(), 5 * 60_000);
+    return () => { clearInterval(tick); clearInterval(reload); };
+  }, [router]);
 
   const ranked = useMemo(
     () => (venues.ok ? rankLive(venues.data, { horizonDays: horizon, chains, assets: asset === 'any' ? undefined : [asset], minTvlUsd: rule.minCapacity, now }) : null),
@@ -137,7 +146,7 @@ export function DiscoverView({ venues, services, paid }: Props) {
             <div className="yf-board-cards">
               {rows.map((r) => (
                 <article key={r.id} className="yf-venue">
-                  <div className="yf-head"><b>{r.rank} · {r.venue}</b><span className="yf-fine">{r.chain}</span></div>
+                  <div className="yf-head"><b>{r.rank} · <a href={r.url} target="_blank" rel="noreferrer">{r.venue}</a></b><span className="yf-fine">{r.chain}</span></div>
                   <p className="yf-fine" style={{ margin: 0 }}>{r.product}</p>
                   <dl className="yf-venue__rows">
                     <dt>Base APY</dt><dd>{fmtPct(r.grossPct)}</dd>
