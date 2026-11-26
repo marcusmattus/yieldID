@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useMemo, useState } from 'react';
 import { DataStatus, Disclaimer, PageHead, SleeveBadge } from '@/components/ui';
 import type { LiveVenue } from '@/lib/defi/pools';
-import { MOVE_COST_MODEL } from '@/lib/defi/pools';
+import { FLAG_LABEL, MOVE_COST_MODEL, venueFlags } from '@/lib/defi/pools';
 import { rankLive } from '@/lib/defi/rank';
 import { fmtPct, type Chain } from '@/lib/rates';
 import { useAppState } from '@/lib/store';
@@ -51,6 +51,7 @@ export function DiscoverView({ venues, services, paid }: Props) {
       <PageHead
         eyebrow="Discover"
         title="Where stablecoins earn, and where agents spend them"
+        actions={<Link className="yf-btn yf-btn--text" href="/id">Look up a YieldID</Link>}
         lede="Two live indexes in one place. Stable venues ranked net of the cost to move, read from DefiLlama. Paid x402 services that agents call per request in USDC, read from the x402 Bazaar. Agents can query both; the full feed is itself paid over x402."
       />
 
@@ -119,6 +120,9 @@ export function DiscoverView({ venues, services, paid }: Props) {
                           {r.product}{r.mean30dPct !== null ? ` · 30-day average ${fmtPct(r.mean30dPct)}` : ''}
                           {r.rewardPct !== null && r.rewardPct >= 0.01 ? ` · +${fmtPct(r.rewardPct)} in reward tokens, not counted` : ''}
                         </span>
+                        {venueFlags({ grossPct: r.grossPct, product: r.product, sleeve: r.sleeve as 'forge' | 'rwa' }).filter((f) => f !== 'rwa').map((f) => (
+                          <span key={f} className="yf-badge yf-badge--warning" style={{ display: 'inline-block', marginTop: 6, marginRight: 6, whiteSpace: 'normal' }}>{FLAG_LABEL[f]}</span>
+                        ))}
                       </th>
                       <td>{r.chain}<br /><SleeveBadge kind={r.sleeve as 'forge' | 'rwa'} /></td>
                       <td className="yf-cell-num">{fmtPct(r.grossPct)}</td>

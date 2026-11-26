@@ -49,18 +49,27 @@ const CHAIN: Record<string, Chain> = {
 };
 
 /**
- * Estimated one-off cost of a round trip into the venue from USDC on Solana,
- * as a percent of size. An estimate for ranking, not a quote: deposit and
- * withdraw fees are near zero on Solana; other chains add a CCTP transfer and
- * gas on both sides (more on Ethereum mainnet); Hyperliquid adds its bridge.
- * Every live row shows this figure as estimated.
+ * Estimated one-off cost, as a percent of size, of moving stablecoins from a
+ * wallet on one chain into a venue on another and back out. An estimate for
+ * ranking, not a quote: same-chain deposits on Solana and L2s cost almost
+ * nothing; a CCTP transfer and gas on both sides add about 0.05%; Ethereum
+ * mainnet gas and Hyperliquid's bridge add more. Every row says "estimated".
  */
+export function moveCostBetween(from: Chain, to: Chain): number {
+  if (from === to) return to === 'Ethereum' ? 0.05 : 0.01;
+  let cost = 0.05;
+  if (from === 'Ethereum' || to === 'Ethereum') cost += 0.1;
+  if (from === 'Hyperliquid' || to === 'Hyperliquid') cost += 0.05;
+  return Math.round(cost * 100) / 100;
+}
+
+/** Move cost from USDC on Solana, YieldID's home chain. */
 export const MOVE_COST_MODEL: Record<Chain, number> = {
-  Solana: 0.01,
-  Base: 0.05,
-  Arbitrum: 0.05,
-  Ethereum: 0.15,
-  Hyperliquid: 0.1,
+  Solana: moveCostBetween('Solana', 'Solana'),
+  Base: moveCostBetween('Solana', 'Base'),
+  Arbitrum: moveCostBetween('Solana', 'Arbitrum'),
+  Ethereum: moveCostBetween('Solana', 'Ethereum'),
+  Hyperliquid: moveCostBetween('Solana', 'Hyperliquid'),
 };
 
 const RWA_HINT = /\b(rwa|t-?bill|treasur|clo|credit|institutional|private)\b/i;
@@ -108,6 +117,23 @@ export function toLiveVenue(p: LlamaPool, readAt: number): LiveVenue {
     mean30dPct: typeof p.apyMean30d === 'number' ? p.apyMean30d : null,
     url: `https://defillama.com/yields/pool/${p.pool}`,
   };
+}
+
+export type VenueFlag = 'high_rate' | 'lockup' | 'rwa';
+
+export const FLAG_LABEL: Record<VenueFlag, string> = {
+  high_rate: 'High rate: check what pays it',
+  lockup: 'Lock-up: funds not instantly withdrawable',
+  rwa: 'Real-world asset: issuer and custody risk',
+};
+
+/** Plain warnings shown next to a venue. They never change the ranking. */
+export function venueFlags(v: Pick<LiveVenue, 'grossPct' | 'product' | 'sleeve'>): VenueFlag[] {
+  const flags: VenueFlag[] = [];
+  if ((v.grossPct ?? 0) > 15) flags.push('high_rate');
+  if (/\block(-|\s)?up|\blocked\b|\bvesting\b/i.test(v.product)) flags.push('lockup');
+  if (v.sleeve === 'rwa') flags.push('rwa');
+  return flags;
 }
 
 export function liveVenuesFrom(pools: LlamaPool[], readAt: number): LiveVenue[] {

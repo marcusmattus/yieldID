@@ -10,7 +10,7 @@ Next.js 15 (App Router) · TypeScript · Privy (Phantom, Solana wallets, email) 
 npm install
 cp .env.example .env.local   # then fill it in, see below
 npm run dev                  # http://localhost:3000
-npm test                     # 50 tests: ranking, policy, SIWS, YieldID records, Ramp webhook signatures, x402 pay flow, live pool and Bazaar mapping
+npm test                     # 57 tests: ranking, policy, SIWS, YieldID records, Ramp webhook signatures, x402 pay flow, live pool and Bazaar mapping, YieldID optimiser
 ```
 
 ### `.env.local`
@@ -96,6 +96,14 @@ Write an adapter that returns a `VenueRead` (see `lib/rates.ts`) with `source: '
 curl "https://<your-deploy>/api/discover?horizon=30&chain=Solana,Base&asset=USDC"
 curl -i "https://<your-deploy>/api/x402/yields?horizon=30&chain=Solana&asset=USDC"   # 402 + price
 ```
+
+**YieldID lookup (`/id`, `/api/yid/optimise`).** Type a YieldID (`marcus`, `marcus@<domain>`) or paste a Solana or 0x address. The service resolves the name from DNS and checks its signatures, reads the stablecoins held directly in each proven wallet (USDC, USDT, PYUSD on Solana; USDC on Base), and lists for each balance the venues that would pay most net of the cost to move it there from its own chain, with a yearly estimate. Venues paying over 15%, with a lock-up, or backed by real-world assets carry a plain warning; the headline total counts only the best venue without a high-rate or lock-up flag. Read-only and free; shareable at `/id/<name>`.
+
+```bash
+curl "https://<your-deploy>/api/yid/optimise?q=marcus&horizon=30"
+```
+
+Optional: `SOLANA_RPC_URL` (server-side Solana RPC for balance reads) and `BASE_RPC_URL` (default `https://mainnet.base.org`).
 
 ## Structure
 
